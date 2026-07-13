@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--
+  ✏️ 【編集ガイド】meta description
+  　 検索エンジンやSNSでシェアされたときに表示される説明文です（〜120文字推奨）。
+  　 文化祭名・開催日・場所などに書き換えてください。
+  -->
+  <meta name="description" content="キャンフェス 2026 — 文化祭特設サイト。企画情報・タイムスケジュール・キャンパスマップをまとめています。">
+
+  <!--
+  ✏️ 【編集ガイド】ページタイトル
+  　 ブラウザのタブや検索結果に表示されます。
+  　 「文化祭名 | サイト名」の形式が一般的です。
+  -->
+  <title>キャンフェス 2026 | 文化祭特設サイト</title>
+
+  <!-- 共通スタイルシートの読み込み（触らなくてOK） -->
+  <link rel="stylesheet" href="css/common.css">
+
+  <style>
+    /* ===================================================
+       このページ（index.html）独自のスタイル
+       =================================================== */
+
+    /* ---------------------------------------------------
+       ヒーローセクション
+       参考画像のゴシックキャッスル風デザインを再現。
+       星形の装飾ドットを背景に配置しています。
+    --------------------------------------------------- */
+    .hero {
+      min-height: calc(100svh - var(--nav-height));
+      background-color: var(--color-bg);
+      /* 星型の小さな装飾ドット（CSSで生成） */
+      background-image:
+        radial-gradient(circle, rgba(181,148,105,0.25) 1px, transparent 1px),
+        radial-gradient(circle, rgba(181,148,105,0.15) 1px, transparent 1px),
+        radial-gradient(circle, rgba(181,148,105,0.20) 1px, transparent 1px);
+      background-size: 80px 80px, 120px 120px, 60px 60px;
+      background-position: 10px 10px, 40px 40px, 70px 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: var(--space-xl) var(--space-sm) var(--space-lg);
+      position: relative;
+    }
+
+    /* 日付バッジ（例：2026.09.20 SUN） */
+    .hero__date-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--color-accent-pale);
+      border-radius: 999px;
+      padding: 6px 20px;
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      color: var(--color-text-sub);
+      margin-bottom: var(--space-sm);
+    }
+    /* バッジの左の飾り（✦ 記号） */
+    .hero__date-badge::before {
+      content: '✦';
+      color: var(--color-accent);
+      font-size: 0.6rem;
+    }
+
+    /* メインタイトル（大文字・大きなフォント） */
+    .hero__title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 9vw, 4rem);
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: var(--color-text);
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    /* サブタイトル（スローガン） */
+    .hero__subtitle {
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      color: var(--color-text-sub);
+      margin-bottom: var(--space-sm);
+    }
+
+    /* 紹介文 */
+    .hero__description {
+      font-size: 0.9rem;
+      line-height: 2;
+      color: var(--color-text-sub);
+      max-width: 480px;
+      margin: 0 auto var(--space-md);
+    }
+
+    /* ボタンエリア */
+    .hero__buttons {
+      margin-bottom: var(--space-lg);
+    }
+
+    /* ---------------------------------------------------
+       カウントダウン枠（静的デザイン）
+       ※ JavaScriptを使わない静的な表示枠です。
+       　 実際の数値はテキストで手動更新してください。
+    --------------------------------------------------- */
+    .countdown {
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    /* 「閉門まであと」ラベル */
+    .countdown__label {
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      color: var(--color-text-sub);
+      margin-bottom: var(--space-sm);
+    }
+
+    /* 数字が並ぶエリア */
+    .countdown__units {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      align-items: flex-end;
+    }
+
+    /* 1つの時間単位（数字＋ラベルのセット） */
+    .countdown__unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 56px;
+    }
+
+    /* 大きな数字 */
+    .countdown__num {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--color-text);
+      letter-spacing: -0.02em;
+    }
+
+    /* 単位ラベル（HOURS, MINUTES, SECONDS） */
+    .countdown__unit-label {
+      font-family: var(--font-display);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      color: var(--color-text-muted);
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+
+    /* 数字の間のコロン（:） */
+    .countdown__sep {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--color-text-muted);
+      margin-bottom: 14px;
+      line-height: 1;
+      padding: 0 2px;
+    }
+
+    /* 下向き矢印（スクロール促進） */
+    .scroll-hint {
+      margin-top: var(--space-sm);
+      color: var(--color-text-muted);
+      font-size: 1rem;
+      animation: bounce-down 1.8s ease-in-out infinite;
+      display: block;
+    }
+    @keyframes bounce-down {
+      0%, 100% { transform: translateY(0); opacity: 0.5; }
+      50%       { transform: translateY(6px); opacity: 1; }
+    }
+
+    /* ---------------------------------------------------
+       タイムスケジュールセクション
+    --------------------------------------------------- */
+    .schedule-section {
+      background-color: var(--color-bg-dark);
+    }
+
+    /* ---------------------------------------------------
+       企画一覧セクション
+    --------------------------------------------------- */
+    .projects-section {
+      background-color: var(--color-bg);
+    }
+
+    /* カードのグリッド（スマホは1列） */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-sm);
+    }
+    /* 幅が広い画面では2列 */
+    @media (min-width: 540px) {
+      .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* 企画カード（リンク付き） */
+    .project-card {
+      display: block;
+      background-color: var(--color-bg-card);
+      border: 1px solid var(--color-accent-pale);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      text-decoration: none;
+      color: var(--color-text);
+      transition: box-shadow 0.25s ease, transform 0.25s ease;
+    }
+    .project-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+      color: var(--color-text);
+    }
+
+    /* カード上部のカラーバー */
+    .project-card__bar {
+      height: 4px;
+      background-color: var(--color-accent);
+    }
+
+    .project-card__body {
+      padding: var(--space-sm);
+    }
+
+    .project-card__tag {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      color: var(--color-accent);
+      text-transform: uppercase;
+      font-family: var(--font-display);
+      margin-bottom: 4px;
+    }
+
+    .project-card__name {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+
+    .project-card__place {
+      font-size: 0.8rem;
+      color: var(--color-text-sub);
+      margin-bottom: 8px;
+    }
+
+    .project-card__desc {
+      font-size: 0.82rem;
+      color: var(--color-text-sub);
+      line-height: 1.7;
+      /* 2行で省略 */
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .project-card__footer {
+      border-top: 1px solid var(--color-accent-pale);
+      padding: 10px var(--space-sm);
+      font-size: 0.78rem;
+      color: var(--color-accent);
+      font-family: var(--font-display);
+      letter-spacing: 0.1em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* プレースホルダーカード（企画追加待ち） */
+    .project-card--placeholder {
+      border-style: dashed;
+      opacity: 0.55;
+      pointer-events: none;
+    }
+    .project-card--placeholder .project-card__bar {
+      background-color: var(--color-accent-pale);
+    }
+
+    /* ---------------------------------------------------
+       キャンパスマップセクション
+    --------------------------------------------------- */
+    .map-section {
+      background-color: var(--color-bg-dark);
+    }
+
+    /* 画像プレースホルダー枠 */
+    .map-placeholder {
+      width: 100%;
+      aspect-ratio: 4/3;  /* 縦横比 4:3（変更可） */
+      border: 1px dashed var(--color-accent);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background-color: var(--color-bg-card);
+      color: var(--color-text-sub);
+      font-size: 0.85rem;
+      text-align: center;
+      padding: var(--space-md);
+    }
+    .map-placeholder__icon {
+      font-size: 2.5rem;
+      opacity: 0.4;
+    }
+
+    /* 実際の画像を入れる <img> タグのスタイル */
+    .map-img {
+      width: 100%;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-accent-pale);
+    }
+
+    /* ---------------------------------------------------
+       注意事項セクション
+    --------------------------------------------------- */
+    .caution-section {
+      background-color: var(--color-bg);
+    }
+
+    .caution-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .caution-item {
+      display: flex;
+      gap: 12px;
+      padding: 14px;
+      background-color: var(--color-bg-card);
+      border: 1px solid var(--color-accent-pale);
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      line-height: 1.7;
+      align-items: flex-start;
+    }
+
+    .caution-item__icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .caution-item__text strong {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .caution-item__text p {
+      color: var(--color-text-sub);
+      font-size: 0.82rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================
+       ナビゲーション（ハンバーガーメニュー付き）
+       ========================================================
+  ✔ ここは触らないでください（メニュー機能の要）
+  
+  ✅ メニューの項目を変えたい場合は、
+     下の nav-menu__list の <li> 内のテキストを変更してください。
+  ======================================================== -->
+
+  <!-- 【CSS-only メニューの仕組み】
+       この非表示チェックボックスがメニュー開閉のスイッチ役を担います。
+       CSS内の .nav-toggle:checked セレクタでパネルを表示制御しています。 -->
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+
+  <nav class="site-nav" aria-label="サイトナビゲーション">
+    <div class="site-nav__inner">
+
+      <!-- ✅ ここのテキストを文化祭名に変えてください -->
+      <div class="site-nav__logo">
+        <a href="index.html">Campus Festival</a>
+      </div>
+
+      <!-- ハンバーガーアイコン（<label> で checkbox と連動）
+           クリックするとメニューが開きます -->
+      <label for="nav-toggle" class="site-nav__hamburger" aria-label="メニューを開く">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+
+    </div>
+  </nav>
+
+  <!-- メニューパネル（右側からスライドイン） -->
+  <div class="nav-menu" role="dialog" aria-modal="true" aria-label="サイトメニュー">
+
+    <!-- ✕ 閉じるボタン -->
+    <label for="nav-toggle" class="nav-menu__close" aria-label="メニューを閉じる">×</label>
+
+    <!-- メニュー内のサイト名 -->
+    <p class="nav-menu__logo">Campus Festival</p>
+
+    <nav aria-label="バーガーメニュー">
+      <ul class="nav-menu__list">
+
+        <!-- ✅ 以下のテキストを変更するとメニュー項目が変わります。
+             href="#id名" は对応するセクションの id に合わせてください。
+             <span> は日本語のサブテキスト（下小文字）です。 -->
+
+        <li>
+          <a href="#top" class="nav-menu__link">
+            About
+            <span>概要</span>
+          </a>
+        </li>
+
+        <li>
+          <!-- ✅ href=" #projects" は 「企画一覧」セクションへのリンク -->
+          <a href="#projects" class="nav-menu__link">
+            Chambers
+            <span>企画一覧</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="#schedule" class="nav-menu__link">
+            Schedule
+            <span>タイムスケジュール</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="#map" class="nav-menu__link">
+            Map
+            <span>キャンパスマップ</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="#caution" class="nav-menu__link">
+            Mystery Quest
+            <span>注意事項・その他</span>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+  </div>
+  <!-- /nav-menu -->
+
+  <!-- 背景暗転（クリックでメニューを閉じる） -->
+  <label for="nav-toggle" class="nav-menu__backdrop" aria-hidden="true"></label>
+
+  <!-- ========================================================
+       ① ヒーローセクション（トップ画面）
+       ========================================================
+  ✏️ 【編集ガイド】ここが一番最初に見える画面です。
+     以下の項目を順番に変えてください：
+     1. 日程バッジ（.hero__date-badge）の日付テキスト
+     2. メインタイトル（.hero__title）の文化祭名
+     3. サブタイトル（.hero__subtitle）のスローガン
+     4. 紹介文（.hero__description）の本文
+     5. ボタンのテキストとリンク先（href="..."）
+     6. カウントダウンの数字（〇時間 〇分 〇秒）
+  ======================================================== -->
+  <section class="hero" id="top" aria-label="トップビジュアル">
+
+    <!-- ① 日程バッジ
+    ✏️ 「2026.09.20 SUN」の部分を実際の開催日に変えてください -->
+    <div class="hero__date-badge">2026.09.20 SUN</div>
+
+    <!-- ② メインタイトル
+    ✏️ 文化祭の正式名称に変えてください（英語・日本語どちらでも可） -->
+    <h1 class="hero__title">
+      【仮】キャンフェス<br>2026
+    </h1>
+
+    <!-- ③ サブタイトル（スローガン）
+    ✏️ 文化祭のスローガンに変えてください -->
+    <p class="hero__subtitle">【ここにスローガンが入ります】</p>
+
+    <!-- ④ 紹介文
+    ✏️ 文化祭の雰囲気を伝える短い文章を100文字程度で書いてください -->
+    <p class="hero__description">
+      今年も始まる、あの場所での特別な一日。<br>
+      各教室に広がる企画と熱気が、あなたの訪れを待っています。
+    </p>
+
+    <!-- ⑤ ボタン
+    ✏️ href="..." のリンク先を変更してください。
+       「#projects」→ このページ内の企画一覧セクションへ
+       「#map」     → このページ内のマップセクションへ -->
+    <div class="hero__buttons btn-group">
+      <a href="#projects" class="btn btn--solid">企画一覧を見る</a>
+      <a href="#map"      class="btn btn--outline">キャンパスマップ</a>
+    </div>
+
+    <!-- ⑥ カウントダウン（JS自動更新）
+    ✅ 【編集ガイド】
+       閉門時刻の設定は js/countdown.js の先頭にある
+       TARGET_DATE の日時を変更してください。
+       例）2026年9月20日17:00閉門 → new Date('2026-09-20T17:00:00') -->
+    <div class="countdown">
+      <p class="countdown__label">— 閉門まであと —</p>
+      <div class="countdown__units">
+
+        <!-- 時間 -->
+        <div class="countdown__unit">
+          <!-- ✅ js/countdown.js が自動で数字を更新します。
+               閉門時刻の変更は js/countdown.js の TARGET_DATE を書き換えてください。 -->
+          <span class="countdown__num" id="cd-hours">--</span>
+          <span class="countdown__unit-label">Hours</span>
+        </div>
+
+        <span class="countdown__sep">:</span>
+
+        <!-- 分 -->
+        <div class="countdown__unit">
+          <!-- id="cd-minutes" : JSがこの要素の数字を自動更新します -->
+          <span class="countdown__num" id="cd-minutes">--</span>
+          <span class="countdown__unit-label">Minutes</span>
+        </div>
+
+        <span class="countdown__sep">:</span>
+
+        <!-- 秒 -->
+        <div class="countdown__unit">
+          <!-- id="cd-seconds" : JSがこの要素の数字を自動更新します -->
+          <span class="countdown__num" id="cd-seconds">--</span>
+          <span class="countdown__unit-label">Seconds</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- スクロール促進の下向き矢印（装飾） -->
+    <span class="scroll-hint" aria-hidden="true">∨</span>
+
+  </section>
+
+  <!-- ========================================================
+       ② タイムスケジュールセクション
+       ========================================================
+  ✏️ 【編集ガイド】タイムスケジュール
+     .timeline__item のブロックをコピーして増やせます。
+     .timeline__time → 時刻を変更
+     .timeline__body 内の <strong> → イベント名を変更
+     .timeline__body 内の <p> → 説明文を変更（不要なら <p> ごと削除OK）
+     .timeline__item--highlight クラスを付けると点が塗りつぶされます（開会式など）
+  ======================================================== -->
+  <section class="section schedule-section" id="schedule">
+    <div class="container">
+
+      <div class="section-heading">
+        <!-- ✏️ 英語見出しと日本語見出しを変えてください -->
+        <h2 class="section-heading__en">Schedule</h2>
+        <span class="section-heading__ja">タイムスケジュール</span>
+        <span class="section-heading__line"></span>
+      </div>
+
+      <div class="timeline">
+
+        <!-- タイムライン項目（以下をコピーして追加できます） -->
+
+        <div class="timeline__item timeline__item--highlight">
+          <!-- ✏️ 時刻を変更 -->
+          <p class="timeline__time">09 : 30</p>
+          <div class="timeline__body">
+            <!-- ✏️ イベント名を変更 -->
+            <strong>開会式・ご挨拶</strong>
+            <!-- ✏️ 説明文を変更（不要なら <p>〜</p> ごと削除してください） -->
+            <p>中央広場メインステージにて。当日の諸注意もお伝えします。</p>
+          </div>
+        </div>
+
+        <div class="timeline__item">
+          <p class="timeline__time">10 : 00</p>
+          <div class="timeline__body">
+            <strong>午前の部 スタート</strong>
+            <p>各教室・ブースが一斉オープン。企画マップを片手にどうぞ！</p>
+          </div>
+        </div>
+
+        <div class="timeline__item">
+          <p class="timeline__time">12 : 00</p>
+          <div class="timeline__body">
+            <strong>昼食タイム</strong>
+            <p>フードコーナー・屋台エリアにお立ち寄りください。混雑が予想されます。</p>
+          </div>
+        </div>
+
+        <div class="timeline__item">
+          <p class="timeline__time">13 : 00</p>
+          <div class="timeline__body">
+            <strong>午後の部 スタート</strong>
+            <p>ステージイベント・パフォーマンスも午後から続々スタート。</p>
+          </div>
+        </div>
+
+        <div class="timeline__item">
+          <p class="timeline__time">15 : 30</p>
+          <div class="timeline__body">
+            <strong>フィナーレ・表彰式</strong>
+            <p>最優秀企画賞の発表と、実行委員からのご挨拶。</p>
+          </div>
+        </div>
+
+        <div class="timeline__item timeline__item--highlight">
+          <p class="timeline__time">16 : 30</p>
+          <div class="timeline__body">
+            <strong>閉会・解散</strong>
+            <p>本日はご来場いただきありがとうございました。</p>
+          </div>
+        </div>
+
+      </div><!-- /.timeline -->
+    </div>
+  </section>
+
+  <!-- ========================================================
+       ③ 企画一覧セクション
+       ========================================================
+  ✏️ 【編集ガイド】企画一覧
+     .project-card のブロックをコピーして企画を追加できます。
+     各企画の情報を以下の順で変更してください：
+     1. .project-card__tag  → 企画の種類（例：カフェ / 展示 / ゲーム）
+     2. .project-card__name → 企画名
+     3. .project-card__place → 場所（例：3号館 204教室）
+     4. .project-card__desc → 短い説明文
+     5. <a href="..."> の href → 各企画ページへのリンクに変更
+
+     ※ 企画ページを作ったら、pages/フォルダ名/index.html を
+        コピーして新しいフォルダを作り、そこへリンクしてください。
+  ======================================================== -->
+  <section class="section projects-section" id="projects">
+    <div class="container">
+
+      <div class="section-heading">
+        <h2 class="section-heading__en">Projects</h2>
+        <span class="section-heading__ja">企画一覧</span>
+        <span class="section-heading__line"></span>
+      </div>
+
+      <div class="projects-grid">
+
+        <!-- ============ 企画カード（サンプル・デモ用） ============
+             ✏️ ここがサンプルの企画ページへのリンクカードです。
+                href="pages/sample-project/index.html" を
+                実際の企画ページのパスに変えてください。 -->
+        <a href="pages/sample-project/index.html" class="project-card" id="card-cafe">
+          <div class="project-card__bar"></div>
+          <div class="project-card__body">
+            <!-- ✏️ 企画の種類 -->
+            <p class="project-card__tag">Café</p>
+            <!-- ✏️ 企画名 -->
+            <h3 class="project-card__name">Campus Café</h3>
+            <!-- ✏️ 開催場所 -->
+            <p class="project-card__place">3号館 2F — 204教室</p>
+            <!-- ✏️ 説明文（2行程度） -->
+            <p class="project-card__desc">
+              手作りドリンクとスイーツのカフェ企画。
+              ゆったりとした空間でひと休みどうぞ。
+            </p>
+          </div>
+          <div class="project-card__footer">
+            <span>詳細を見る</span>
+            <span>→</span>
+          </div>
+        </a>
+        <!-- ============ / 企画カード ============ -->
+
+        <!-- ============ 企画追加待ちのプレースホルダー
+             ✏️ 企画が決まったら、上の .project-card ブロックをコピーして
+                内容を書き換え、このプレースホルダーを削除してください。 -->
+        <div class="project-card project-card--placeholder" id="card-placeholder-1">
+          <div class="project-card__bar"></div>
+          <div class="project-card__body">
+            <p class="project-card__tag">Coming Soon</p>
+            <h3 class="project-card__name">企画ページ 追加予定</h3>
+            <p class="project-card__place">場所 未定</p>
+            <p class="project-card__desc">ここに企画カードを追加できます。上のカードをコピーして使ってください。</p>
+          </div>
+          <div class="project-card__footer">
+            <span>準備中</span>
+            <span>—</span>
+          </div>
+        </div>
+
+        <div class="project-card project-card--placeholder" id="card-placeholder-2">
+          <div class="project-card__bar"></div>
+          <div class="project-card__body">
+            <p class="project-card__tag">Coming Soon</p>
+            <h3 class="project-card__name">企画ページ 追加予定</h3>
+            <p class="project-card__place">場所 未定</p>
+            <p class="project-card__desc">ここに企画カードを追加できます。上のカードをコピーして使ってください。</p>
+          </div>
+          <div class="project-card__footer">
+            <span>準備中</span>
+            <span>—</span>
+          </div>
+        </div>
+        <!-- ============ / プレースホルダー ============ -->
+
+      </div><!-- /.projects-grid -->
+
+    </div>
+  </section>
+
+  <!-- ========================================================
+       ④ キャンパスマップセクション
+       ========================================================
+  ✏️ 【編集ガイド】キャンパスマップ
+     マップ画像ができたら、以下の手順で差し替えてください：
+     1. 画像ファイル（例：map.jpg）をサイトのフォルダに入れる
+     2. 下の <!-- 画像ここ --> コメントの位置にある <img> タグの
+        src="map.jpg" を実際のファイル名に変える
+     3. .map-placeholder（プレースホルダー枠）を削除する
+
+     画像の推奨サイズ：横幅 1200px 以上（JPGまたはPNG）
+  ======================================================== -->
+  <section class="section map-section" id="map">
+    <div class="container">
+
+      <div class="section-heading">
+        <h2 class="section-heading__en">Campus Map</h2>
+        <span class="section-heading__ja">キャンパスマップ</span>
+        <span class="section-heading__line"></span>
+      </div>
+
+      <!--
+      ✏️ 【画像の差し替え方】
+         画像ができたら、以下のプレースホルダーを削除して、
+         その場所に <img src="map.jpg" alt="キャンパスマップ" class="map-img"> を追加してください。
+
+         例：
+         <img src="map.jpg" alt="キャンパスマップ" class="map-img">
+      -->
+      <div class="map-placeholder" id="campus-map-placeholder">
+        <span class="map-placeholder__icon">🗺️</span>
+        <span>ここにキャンパスマップの画像が入ります</span>
+        <span style="font-size:0.75rem; color: var(--color-text-muted);">
+          画像ファイルを用意したら index.html の<br>「✏️ 【画像の差し替え方】」コメントを参照してください
+        </span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================
+       ⑤ 注意事項セクション
+       ========================================================
+  ✏️ 【編集ガイド】注意事項
+     .caution-item のブロックをコピーして項目を追加できます。
+     各項目の構成：
+     - .caution-item__icon → 絵文字アイコン（変更・削除可）
+     - <strong> → 注意事項の見出し
+     - <p> → 詳細の説明文（不要なら削除OK）
+  ======================================================== -->
+  <section class="section caution-section" id="caution">
+    <div class="container">
+
+      <div class="section-heading">
+        <h2 class="section-heading__en">Notice</h2>
+        <span class="section-heading__ja">注意事項</span>
+        <span class="section-heading__line"></span>
+      </div>
+
+      <ul class="caution-list" role="list">
+
+        <!-- 注意事項の1項目 → このブロックをコピーして増やせます -->
+        <li class="caution-item">
+          <span class="caution-item__icon" aria-hidden="true">♻️</span>
+          <div class="caution-item__text">
+            <!-- ✏️ 注意事項の見出し -->
+            <strong>ゴミの分別について</strong>
+            <!-- ✏️ 詳細説明（不要なら <p>〜</p> ごと削除してください） -->
+            <p>会場内のゴミ箱は「燃えるゴミ」「燃えないゴミ」「ペットボトル」の3種類です。正しく分別にご協力ください。</p>
+          </div>
+        </li>
+
+        <li class="caution-item">
+          <span class="caution-item__icon" aria-hidden="true">📷</span>
+          <div class="caution-item__text">
+            <strong>撮影のルールについて</strong>
+            <p>他の来場者が映り込む写真のSNS投稿は、当人の同意を得てから行ってください。また、企画によっては撮影禁止の場合があります。各会場のスタッフの指示に従ってください。</p>
+          </div>
+        </li>
+
+        <li class="caution-item">
+          <span class="caution-item__icon" aria-hidden="true">🚫</span>
+          <div class="caution-item__text">
+            <strong>禁止事項</strong>
+            <p>会場内での飲酒・喫煙は禁止です。また、迷惑行為（大声・走り回りなど）はお控えください。</p>
+          </div>
+        </li>
+
+        <li class="caution-item">
+          <span class="caution-item__icon" aria-hidden="true">🆘</span>
+          <div class="caution-item__text">
+            <strong>緊急時・体調不良のとき</strong>
+            <p>体調が優れない場合は、最寄りのスタッフにお声がけください。救護室は（場所未定）に設置しています。</p>
+          </div>
+        </li>
+
+        <li class="caution-item">
+          <span class="caution-item__icon" aria-hidden="true">🌧️</span>
+          <div class="caution-item__text">
+            <strong>雨天時について</strong>
+            <p>屋外企画は悪天候により内容が変更・中止になる場合があります。当日のSNSやこのページでご確認ください。</p>
+          </div>
+        </li>
+
+      </ul><!-- /.caution-list -->
+    </div>
+  </section>
+
+  <!-- ========================================================
+       フッター
+       ========================================================
+  ✏️ 【編集ガイド】フッター
+     文化祭名・年度・担当者名などを変えてください。
+  ======================================================== -->
+  <footer class="site-footer">
+    <div class="site-footer__inner container">
+
+      <!-- ✏️ 文化祭名を変えてください -->
+      <strong>Campus Festival 2026</strong>
+
+      <!-- ✏️ 必要に応じてリンクを追加・変更してください -->
+      <nav aria-label="フッターナビ">
+        <a href="#top">トップへ戻る</a>
+        &ensp;|&ensp;
+        <a href="#projects">企画一覧</a>
+        &ensp;|&ensp;
+        <a href="#caution">注意事項</a>
+      </nav>
+
+      <!-- ✏️ クレジット表記を変更してください -->
+      <p>© 2026 キャンフェス 実行委員会</p>
+
+    </div>
+  </footer>
+
+  <!--
+  カウントダウンJSの読み込み
+  ✅ 【編集ガイド】
+     閉門時刻の設定は js/countdown.js の先頭にある
+     TARGET_DATE を変更してください。
+  -->
+  <script src="js/countdown.js"></script>
+
+  <!-- メニュー自動クローズJS（メニューリンクをタップしたときに自動で閉じます） -->
+  <script src="js/menu.js"></script>
+
+</body>
+</html>
