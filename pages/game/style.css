@@ -141,6 +141,10 @@
   background-color: var(--color-bg-dark);
 }
 
+.menu-section2 {
+  background-color: var(--color-bg-card);
+}
+
 .menu-list {
   display: flex;
   flex-direction: column;
