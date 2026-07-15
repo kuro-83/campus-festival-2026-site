@@ -125,6 +125,10 @@
    4. 企画概要・紹介文
    ============================================================ */
 .about-section {
+  background-color: var(--color-bg-card);
+}
+
+.about-section1 {
   background-color: var(--color-bg);
 }
 
@@ -142,7 +146,7 @@
 }
 
 .menu-section2 {
-  background-color: var(--color-bg-card);
+  background-color: var(--color-bg);
 }
 
 .menu-list {
@@ -228,89 +232,6 @@
   font-size: 0.72rem;
   font-family: var(--font-body);
   color: var(--color-text-muted);
-}
-
-/* ============================================================
-   6. アレルギー情報テーブル
-   ============================================================ */
-.allergy-section {
-  background-color: var(--color-bg);
-}
-
-.allergy-note {
-  font-size: 0.8rem;
-  color: var(--color-text-sub);
-  line-height: 1.8;
-  padding: 12px 14px;
-  border-left: 3px solid var(--page-accent);
-  background-color: var(--color-bg-card);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  margin-bottom: var(--space-sm);
-}
-
-/* スマホで横スクロールできるようにするラッパー */
-.table-scroll {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--page-accent-pale);
-}
-
-.allergy-table {
-  width: 100%;
-  min-width: 360px; /* この幅未満でスクロール発動 */
-  border-collapse: collapse;
-  font-size: 0.83rem;
-  background-color: var(--color-bg-card);
-}
-
-.allergy-table th,
-.allergy-table td {
-  padding: 10px 14px;
-  text-align: center;
-  border-bottom: 1px solid var(--page-accent-pale);
-}
-
-.allergy-table thead {
-  background-color: var(--page-hero-bg);
-}
-.allergy-table thead th {
-  color: rgba(247,244,239,0.8);
-  font-weight: 500;
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  white-space: nowrap;
-}
-.allergy-table thead th:first-child {
-  text-align: left;
-}
-
-.allergy-table tbody tr:last-child td {
-  border-bottom: none;
-}
-.allergy-table tbody tr:hover {
-  background-color: var(--color-bg-dark);
-}
-
-.allergy-table td:first-child {
-  text-align: left;
-  font-weight: 500;
-  color: var(--color-text);
-  white-space: nowrap;
-}
-
-/* アレルゲン「あり」 */
-.allergy--yes {
-  color: #8B2500;
-  font-weight: 700;
-}
-/* アレルゲン「なし」 */
-.allergy--no {
-  color: var(--color-text-muted);
-}
-/* 「要確認」 */
-.allergy--check {
-  color: #7A5C00;
 }
 
 /* ============================================================
