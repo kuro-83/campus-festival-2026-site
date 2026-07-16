@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,9 +36,9 @@
       background-color: var(--color-bg);
       /* 星型の小さな装飾ドット（CSSで生成） */
       background-image:
-        radial-gradient(circle, rgba(181,148,105,0.25) 1px, transparent 1px),
-        radial-gradient(circle, rgba(181,148,105,0.15) 1px, transparent 1px),
-        radial-gradient(circle, rgba(181,148,105,0.20) 1px, transparent 1px);
+        radial-gradient(circle, rgba(181, 148, 105, 0.25) 1px, transparent 1px),
+        radial-gradient(circle, rgba(181, 148, 105, 0.15) 1px, transparent 1px),
+        radial-gradient(circle, rgba(181, 148, 105, 0.20) 1px, transparent 1px);
       background-size: 80px 80px, 120px 120px, 60px 60px;
       background-position: 10px 10px, 40px 40px, 70px 5px;
       display: flex;
@@ -63,6 +64,7 @@
       color: var(--color-text-sub);
       margin-bottom: var(--space-sm);
     }
+
     /* バッジの左の飾り（✦ 記号） */
     .hero__date-badge::before {
       content: '✦';
@@ -177,9 +179,19 @@
       animation: bounce-down 1.8s ease-in-out infinite;
       display: block;
     }
+
     @keyframes bounce-down {
-      0%, 100% { transform: translateY(0); opacity: 0.5; }
-      50%       { transform: translateY(6px); opacity: 1; }
+
+      0%,
+      100% {
+        transform: translateY(0);
+        opacity: 0.5;
+      }
+
+      50% {
+        transform: translateY(6px);
+        opacity: 1;
+      }
     }
 
     /* ---------------------------------------------------
@@ -202,6 +214,7 @@
       grid-template-columns: 1fr;
       gap: var(--space-sm);
     }
+
     /* 幅が広い画面では2列 */
     @media (min-width: 540px) {
       .projects-grid {
@@ -220,6 +233,7 @@
       color: var(--color-text);
       transition: box-shadow 0.25s ease, transform 0.25s ease;
     }
+
     .project-card:hover {
       box-shadow: var(--shadow-md);
       transform: translateY(-3px);
@@ -287,6 +301,7 @@
       opacity: 0.55;
       pointer-events: none;
     }
+
     .project-card--placeholder .project-card__bar {
       background-color: var(--color-accent-pale);
     }
@@ -301,7 +316,8 @@
     /* 画像プレースホルダー枠 */
     .map-placeholder {
       width: 100%;
-      aspect-ratio: 4/3;  /* 縦横比 4:3（変更可） */
+      aspect-ratio: 4/3;
+      /* 縦横比 4:3（変更可） */
       border: 1px dashed var(--color-accent);
       border-radius: var(--radius-md);
       display: flex;
@@ -315,6 +331,7 @@
       text-align: center;
       padding: var(--space-md);
     }
+
     .map-placeholder__icon {
       font-size: 2.5rem;
       opacity: 0.4;
@@ -370,6 +387,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- ========================================================
@@ -506,7 +524,7 @@
        「#map」     → このページ内のマップセクションへ -->
     <div class="hero__buttons btn-group">
       <a href="#projects" class="btn btn--solid">企画一覧を見る</a>
-      <a href="#map"      class="btn btn--outline">キャンパスマップ</a>
+      <a href="#map" class="btn btn--outline">キャンパスマップ</a>
     </div>
 
     <!-- ⑥ カウントダウン（JS自動更新）
@@ -998,4 +1016,5 @@
   <script src="js/menu.js"></script>
 
 </body>
+
 </html>
