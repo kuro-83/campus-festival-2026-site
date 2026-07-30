@@ -1,0 +1,356 @@
+/*
+============================================================
+  style.css — 企画紹介ページ 独自スタイル
+============================================================
+  このファイルは企画ページ専用のスタイルです。
+  共通の common.css を読み込んだ上で、
+  このページだけのデザインを追加・上書きしています。
+
+  ✏️ 【カスタマイズガイド】
+     このページのデザインを変えるには :root { } の
+     CSS変数を変えるのが一番簡単です。
+     色・フォントを変えると、ページの雰囲気がガラッと変わります！
+============================================================
+*/
+
+/* ============================================================
+   1. このページ専用のカラー変数（上書き・追加）
+   ============================================================
+   ✏️ ここを変えると → このページの配色が一括で変わります！
+      common.css の変数も引き継いでいます。
+   ============================================================ */
+:root {
+  /* このページのアクセントカラー
+     → common.css の --color-accent と同じブロンズゴールドですが、
+        変えればこのページだけ違う色にできます */
+  --page-accent:       #B59469;
+  --page-accent-dark:  #9A7A52;
+  --page-accent-pale:  #E8DDD0;
+
+  /* 企画ヘッダーの背景色
+     ✏️ ここを変えると企画ページのヘッダー背景色が変わります */
+  --page-hero-bg:      #3D2E22;  /* 深いチョコレートブラウン */
+  --page-hero-text:    #F7F4EF;  /* 羊皮紙ベージュ（ヘッダーのテキスト色） */
+}
+
+/* ============================================================
+   2. 企画ページ ヒーローヘッダー
+   ============================================================ */
+.page-hero {
+  background-color: var(--page-hero-bg);
+  /* 微細なドット装飾（背景テクスチャ） */
+  background-image:
+    radial-gradient(circle, rgba(181,148,105,0.18) 1px, transparent 1px),
+    radial-gradient(circle, rgba(181,148,105,0.10) 1px, transparent 1px);
+  background-size: 60px 60px, 90px 90px;
+  background-position: 0 0, 30px 30px;
+  padding: var(--space-xl) var(--space-sm) var(--space-lg);
+  text-align: center;
+}
+
+/* ヘッダー内の「企画種別」タグ（例：Café / Exhibition） */
+.page-hero__tag {
+  display: inline-block;
+  border: 1px solid rgba(181,148,105,0.4);
+  border-radius: 999px;
+  padding: 5px 20px;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  color: rgba(247,244,239,0.7);
+  margin-bottom: var(--space-sm);
+  text-transform: uppercase;
+}
+
+/* 企画名（大見出し） */
+.page-hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 7vw, 3.2rem);
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: var(--page-hero-text);
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+
+/* 開催場所 */
+.page-hero__place {
+  font-size: 0.82rem;
+  color: rgba(247,244,239,0.6);
+  letter-spacing: 0.12em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.page-hero__place::before {
+  content: '◆';
+  font-size: 0.5rem;
+  color: var(--page-accent);
+}
+.page-hero__place::after {
+  content: '◆';
+  font-size: 0.5rem;
+  color: var(--page-accent);
+}
+
+/* ============================================================
+   3. セクション見出し（企画ページ用）
+   ============================================================ */
+.page-section-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--page-accent-pale);
+  padding-bottom: 10px;
+  margin-bottom: var(--space-sm);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+/* 見出し左の縦線アクセント */
+.page-section-title::before {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 1em;
+  background-color: var(--page-accent);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   4. 企画概要・紹介文
+   ============================================================ */
+.about-section {
+  background-color: var(--color-bg);
+}
+
+.about-text {
+  font-size: 0.92rem;
+  line-height: 2;
+  color: var(--color-text);
+}
+
+/* ============================================================
+   5. メニュー・サービス内容
+   ============================================================ */
+.menu-section {
+  background-color: var(--color-bg-dark);
+}
+
+.menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.menu-item {
+  display: flex;
+  gap: var(--space-sm);
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--page-accent-pale);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+.menu-item:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+/* 商品画像エリア */
+.menu-item__img-wrap {
+  width: 110px;
+  flex-shrink: 0;
+  background-color: var(--color-bg-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  /* 画像がないときのプレースホルダー色 */
+  color: var(--page-accent-pale);
+}
+.menu-item__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* スマホでは画像を上部に広げる */
+@media (max-width: 400px) {
+  .menu-item {
+    flex-direction: column;
+  }
+  .menu-item__img-wrap {
+    width: 100%;
+    height: 140px;
+  }
+}
+
+.menu-item__body {
+  padding: 14px 14px 14px 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+/* 商品名 */
+.menu-item__name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* 商品の説明 */
+.menu-item__desc {
+  font-size: 0.8rem;
+  color: var(--color-text-sub);
+  line-height: 1.7;
+}
+
+/* 値段 */
+.menu-item__price {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--page-accent-dark);
+  margin-top: 4px;
+}
+.menu-item__price small {
+  font-size: 0.72rem;
+  font-family: var(--font-body);
+  color: var(--color-text-muted);
+}
+
+/* ============================================================
+   6. アレルギー情報テーブル
+   ============================================================ */
+.allergy-section {
+  background-color: var(--color-bg);
+}
+
+.allergy-note {
+  font-size: 0.8rem;
+  color: var(--color-text-sub);
+  line-height: 1.8;
+  padding: 12px 14px;
+  border-left: 3px solid var(--page-accent);
+  background-color: var(--color-bg-card);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-bottom: var(--space-sm);
+}
+
+/* スマホで横スクロールできるようにするラッパー */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--page-accent-pale);
+}
+
+.allergy-table {
+  width: 100%;
+  min-width: 360px; /* この幅未満でスクロール発動 */
+  border-collapse: collapse;
+  font-size: 0.83rem;
+  background-color: var(--color-bg-card);
+}
+
+.allergy-table th,
+.allergy-table td {
+  padding: 10px 14px;
+  text-align: center;
+  border-bottom: 1px solid var(--page-accent-pale);
+}
+
+.allergy-table thead {
+  background-color: var(--page-hero-bg);
+}
+.allergy-table thead th {
+  color: rgba(247,244,239,0.8);
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+.allergy-table thead th:first-child {
+  text-align: left;
+}
+
+.allergy-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.allergy-table tbody tr:hover {
+  background-color: var(--color-bg-dark);
+}
+
+.allergy-table td:first-child {
+  text-align: left;
+  font-weight: 500;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+/* アレルゲン「あり」 */
+.allergy--yes {
+  color: #8B2500;
+  font-weight: 700;
+}
+/* アレルゲン「なし」 */
+.allergy--no {
+  color: var(--color-text-muted);
+}
+/* 「要確認」 */
+.allergy--check {
+  color: #7A5C00;
+}
+
+/* ============================================================
+   7. メインページへ戻るリンク
+   ============================================================ */
+.back-nav {
+  padding: var(--space-sm) 0;
+  background-color: var(--color-bg-dark);
+  border-bottom: 1px solid var(--page-accent-pale);
+}
+.back-nav__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: var(--color-text-sub);
+}
+.back-nav__link:hover {
+  color: var(--color-text);
+}
+.back-nav__arrow {
+  font-size: 0.9rem;
+}
+
+/* ============================================================
+   8. 企画ページ フッター
+   ============================================================ */
+.page-footer {
+  background-color: var(--page-hero-bg);
+  color: rgba(247,244,239,0.55);
+  text-align: center;
+  padding: var(--space-md) var(--space-sm);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+}
+.page-footer strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: rgba(247,244,239,0.85);
+  letter-spacing: 0.2em;
+  margin-bottom: 8px;
+}
+.page-footer a {
+  color: var(--page-accent);
+}
