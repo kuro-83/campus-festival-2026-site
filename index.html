@@ -351,6 +351,120 @@
       background-color: var(--color-bg);
     }
 
+    /* ---------------------------------------------------
+       一番くじ 宣伝バナーセクション
+    --------------------------------------------------- */
+    .kuji-banner-section {
+      background-color: #0D1B2A;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 上下のゴールドライン */
+    .kuji-banner-section::before,
+    .kuji-banner-section::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #C9922A, #E8BF6A, #C9922A, transparent);
+    }
+    .kuji-banner-section::before { top: 0; }
+    .kuji-banner-section::after  { bottom: 0; }
+
+    /* 背景のキラキラドット装飾 */
+    .kuji-banner__bg-dots {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse at 50% 50%, rgba(201,146,42,0.15) 0%, transparent 65%),
+        radial-gradient(circle, rgba(201,146,42,0.18) 1px, transparent 1px),
+        radial-gradient(circle, rgba(232,191,106,0.10) 1px, transparent 1px);
+      background-size: 100% 100%, 60px 60px, 95px 95px;
+      background-position: center, 0 0, 30px 30px;
+      pointer-events: none;
+    }
+
+    .kuji-banner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: var(--space-lg) var(--space-sm);
+    }
+
+    /* バナー上部のバッジ */
+    .kuji-banner__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(201,146,42,0.5);
+      border-radius: 999px;
+      padding: 5px 18px;
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      color: #E8BF6A;
+      margin-bottom: var(--space-sm);
+      background: rgba(201,146,42,0.06);
+    }
+
+    /* バナー見出し */
+    .kuji-banner__title {
+      font-family: var(--font-display);
+      font-size: clamp(1.3rem, 5.5vw, 2.2rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      line-height: 1.4;
+      color: #F7F4EF;
+      margin-bottom: var(--space-xs);
+    }
+
+    .kuji-banner__title .kuji-banner__accent {
+      color: #E8BF6A;
+      font-weight: 600;
+    }
+
+    .kuji-banner__subtitle {
+      font-size: 0.88rem;
+      color: rgba(247,244,239,0.6);
+      letter-spacing: 0.1em;
+      margin-bottom: var(--space-md);
+    }
+
+    /* バナーボタン */
+    .kuji-banner__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #9B6F1A, #C9922A, #E8BF6A);
+      color: #0D1B2A;
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      padding: 14px 32px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      box-shadow: 0 4px 20px rgba(201,146,42,0.4);
+    }
+
+    .kuji-banner__btn:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 8px 30px rgba(201,146,42,0.55);
+      color: #0D1B2A;
+      opacity: 0.92;
+    }
+
+    .kuji-banner__btn-arrow {
+      font-size: 1rem;
+      transition: transform 0.2s ease;
+    }
+
+    .kuji-banner__btn:hover .kuji-banner__btn-arrow {
+      transform: translateX(3px);
+    }
+
     .caution-list {
       display: flex;
       flex-direction: column;
@@ -650,6 +764,37 @@
   </section>
 
   <!-- ========================================================
+       🔥 一番くじ 宣伝バナー（#schedule の直後）
+  ======================================================== -->
+  <section class="kuji-banner-section" id="kuji-banner" aria-label="一番くじ告知バナー">
+    <!-- 背景装飾（触らないでOK） -->
+    <div class="kuji-banner__bg-dots" aria-hidden="true"></div>
+
+    <div class="kuji-banner">
+      <!-- バッジ -->
+      <p class="kuji-banner__badge">✦ 当日限定 ✦</p>
+
+      <!-- 見出し -->
+      <h2 class="kuji-banner__title">
+        🔥 <span class="kuji-banner__accent">キャンフェス 2026</span><br>
+        一番くじ 開催決定！
+      </h2>
+
+      <!-- サブテキスト -->
+      <p class="kuji-banner__subtitle">
+        S賞〜ラストワン賞まで、豪華景品が当たる当日限定くじ。<br>
+        お見逃しなく！
+      </p>
+
+      <!-- CTAボタン -->
+      <a href="pages/ichiban-kuji/index.html" class="kuji-banner__btn" id="kuji-banner-cta">
+        景品一覧・詳細はこちら
+        <span class="kuji-banner__btn-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ========================================================
        ③ 企画一覧セクション
        ========================================================
   ✏️ 【編集ガイド】企画一覧
@@ -849,20 +994,23 @@
           </div>
         </div>
 
-        <!-- ============ 一番くじ（準備中） ============ -->
-        <div class="project-card project-card--placeholder" id="card-lottery">
-          <div class="project-card__bar"></div>
+        <!-- ============ 一番くじ ============ -->
+        <a href="pages/ichiban-kuji/index.html" class="project-card" id="card-lottery" style="border-color: rgba(201,146,42,0.45);">
+          <div class="project-card__bar" style="background: linear-gradient(90deg, #9B6F1A, #C9922A, #E8BF6A);"></div>
           <div class="project-card__body">
-            <p class="project-card__tag">Coming Soon</p>
-            <h3 class="project-card__name">一番くじ</h3>
-            <p class="project-card__place">場所 未定</p>
-            <p class="project-card__desc">ページ準備中です。もうしばらくお待ちください。</p>
+            <p class="project-card__tag" style="color: #C9922A;">🎟 Lottery</p>
+            <h3 class="project-card__name">当日限定 一番くじ 🔥</h3>
+            <p class="project-card__place">場所 未定 — 当日発表</p>
+            <p class="project-card__desc">
+              S賞・A賞・B賞・C賞・D賞・ラストワン賞の豪華景品ラインナップ！<br>
+              当日限定の数量限定くじ。
+            </p>
           </div>
-          <div class="project-card__footer">
-            <span>準備中</span>
-            <span>—</span>
+          <div class="project-card__footer" style="color: #C9922A;">
+            <span>景品一覧・詳細はこちら</span>
+            <span>→</span>
           </div>
-        </div>
+        </a>
 
       </div><!-- /.projects-grid -->
 

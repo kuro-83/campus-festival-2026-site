@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="キャンフェス2026 当日限定！一番くじ特設ページ。S賞・A賞・B賞・C賞・D賞・ラストワン賞の豪華景品ラインナップをご確認ください。当日会場にて販売予定。">
+  <title>一番くじ | キャンフェス 2026</title>
+
+  <!-- 共通スタイルシート（必須 — 触らないでOK） -->
+  <link rel="stylesheet" href="../../css/common.css">
+  <!-- このページ専用スタイル -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ========================================================
+       ナビゲーションバー（ハンバーガーメニュー付き）
+       ⚠️ id="nav-toggle" は固定。変更禁止。
+  ======================================================== -->
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+
+  <nav class="site-nav" aria-label="サイトナビゲーション">
+    <div class="site-nav__inner">
+      <div class="site-nav__logo">
+        <a href="../../index.html">Campus Festival</a>
+      </div>
+      <label for="nav-toggle" class="site-nav__hamburger" aria-label="メニューを開く">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+    </div>
+  </nav>
+
+  <!-- メニューパネル（右側からスライドイン） -->
+  <div class="nav-menu" role="dialog" aria-modal="true" aria-label="サイトメニュー">
+    <label for="nav-toggle" class="nav-menu__close" aria-label="メニューを閉じる">×</label>
+    <p class="nav-menu__logo">Campus Festival</p>
+    <nav aria-label="バーガーメニュー">
+      <ul class="nav-menu__list">
+        <li>
+          <a href="../../index.html#top" class="nav-menu__link">
+            About <span>概要</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html#projects" class="nav-menu__link">
+            Chambers <span>企画一覧</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html#schedule" class="nav-menu__link">
+            Schedule <span>タイムスケジュール</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html#map" class="nav-menu__link">
+            Map <span>キャンパスマップ</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html#caution" class="nav-menu__link">
+            Notice <span>注意事項</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <!-- /nav-menu -->
+
+  <!-- 背景暗転（クリックでメニューを閉じる） -->
+  <label for="nav-toggle" class="nav-menu__backdrop" aria-hidden="true"></label>
+
+  <!-- ========================================================
+       メインビジュアル（ヒーローエリア）
+  ======================================================== -->
+  <header class="page-hero" id="top">
+
+    <!-- 企画種別タグ -->
+    <p class="page-hero__tag">✦ Limited Event ✦</p>
+
+    <!-- 企画名・キャッチコピー -->
+    <h1 class="page-hero__title">
+      キャンフェス 2026<br>
+      <span class="kuji-emphasis">当日限定 一番くじ</span><br>
+      開催決定！
+    </h1>
+
+    <!-- 日時・場所の案内枠 -->
+    <!-- ✏️ 開催当日に実際の日時・場所に書き換えてください -->
+    <div class="page-hero__info">
+      <div class="page-hero__info-row">
+        <span class="page-hero__info-icon">📅</span>
+        <span class="page-hero__info-label">DATE</span>
+        <span>2026年9月20日（日）― 開催当日のみ</span>
+      </div>
+      <div class="page-hero__info-row">
+        <span class="page-hero__info-icon">📍</span>
+        <span class="page-hero__info-label">PLACE</span>
+        <span>【場所 未定】— 当日発表</span>
+      </div>
+      <div class="page-hero__info-row">
+        <span class="page-hero__info-icon">🎟️</span>
+        <span class="page-hero__info-label">PRICE</span>
+        <span>1回 500円（税込）— 数量限定</span>
+      </div>
+    </div>
+
+  </header>
+
+  <!-- ========================================================
+       メインコンテンツ
+  ======================================================== -->
+  <main>
+
+    <!-- ========================================================
+         ① 景品ラインナップ一覧
+         ========================================================
+    ✏️ 【編集ガイド】景品カード（.kuji-card）の変更方法
+       各カードの変更箇所：
+       1. .kuji-card の modifier クラス（--s, --a, --last-one）→ 賞の種類
+       2. .kuji-card__bar 上の色が自動で変わります
+       3. .kuji-card__prize → 賞の名前テキスト
+       4. .kuji-card__img-wrap 内の絵文字 → 実際の景品画像に差し替え可
+       5. .kuji-card__name → 景品名
+       6. .kuji-card__desc → 景品の説明文
+
+    💡 【完売時の表示方法】
+       カードの <div class="kuji-card"> に「is-soldout」クラスを追加してください。
+       例：<div class="kuji-card kuji-card--a is-soldout">
+       → 画像エリアに半透明黒背景 + SOLD OUT 赤バッジが重なります。
+    ======================================================== -->
+    <section class="section lineup-section" id="lineup">
+      <div class="container">
+
+        <h2 class="page-section-title">Prize Lineup — 景品ラインナップ</h2>
+
+        <div class="kuji-grid">
+
+          <!-- ============ S賞 ============ -->
+          <div class="kuji-card kuji-card--s" id="kuji-card-s">
+            <div class="kuji-card__bar"></div>
+            <!-- 画像エリア（実際の景品画像に差し替え可） -->
+            <div class="kuji-card__img-wrap" aria-hidden="true">
+              🏆
+              <div class="img-placeholder-border"></div>
+            </div>
+            <div class="kuji-card__body">
+              <!-- 賞の名前 -->
+              <p class="kuji-card__prize">S 賞</p>
+              <!-- 景品名 ✏️ 変更してください -->
+              <p class="kuji-card__name">キャンフェス2026 オリジナル アクリルスタンド（特大）</p>
+              <!-- 説明文 ✏️ 変更してください -->
+              <p class="kuji-card__desc">
+                キャンフェス2026限定デザインの特大アクリルスタンド。<br>
+                全1種・最高レアリティ。
+              </p>
+            </div>
+          </div>
+          <!-- ============ / S賞 ============ -->
+
+          <!-- ============ A賞 ============ -->
+          <div class="kuji-card kuji-card--a" id="kuji-card-a">
+            <div class="kuji-card__bar"></div>
+            <div class="kuji-card__img-wrap" aria-hidden="true">
+              🥇
+              <div class="img-placeholder-border"></div>
+            </div>
+            <div class="kuji-card__body">
+              <p class="kuji-card__prize">A 賞</p>
+              <p class="kuji-card__name">キャンフェス2026 オリジナル アクリルキーホルダー</p>
+              <p class="kuji-card__desc">
+                持ち歩けるミニサイズのキーホルダー。<br>
+                全3種・ランダム封入。
+              </p>
+            </div>
+          </div>
+          <!-- ============ / A賞 ============ -->
+
+          <!-- ============ B賞 ============ -->
+          <div class="kuji-card kuji-card--b" id="kuji-card-b">
+            <div class="kuji-card__bar"></div>
+            <div class="kuji-card__img-wrap" aria-hidden="true">
+              🥈
+              <div class="img-placeholder-border"></div>
+            </div>
+            <div class="kuji-card__body">
+              <p class="kuji-card__prize">B 賞</p>
+              <p class="kuji-card__name">キャンフェス2026 オリジナル 缶バッジセット</p>
+              <p class="kuji-card__desc">
+                全5種デザインの缶バッジ3枚セット。<br>
+                ランダム封入。
+              </p>
+            </div>
+          </div>
+          <!-- ============ / B賞 ============ -->
+
+          <!-- ============ C賞 ============ -->
+          <!--
+          💡 SOLD OUT 表示のデモ：
+             下のカードに is-soldout クラスが付いています。
+             実際に完売したらこの形式を使ってください。
+          -->
+          <div class="kuji-card kuji-card--c is-soldout" id="kuji-card-c">
+            <div class="kuji-card__bar"></div>
+            <div class="kuji-card__img-wrap" aria-hidden="true">
+              🥉
+              <!-- SOLD OUT バッジ（is-soldout クラス付きカードに挿入） -->
+              <span class="soldout-badge" aria-label="完売">SOLD OUT</span>
+              <div class="img-placeholder-border"></div>
+            </div>
+            <div class="kuji-card__body">
+              <p class="kuji-card__prize">C 賞</p>
+              <p class="kuji-card__name">キャンフェス2026 オリジナル クリアファイル</p>
+              <p class="kuji-card__desc">
+                A4サイズのオリジナルデザインクリアファイル。<br>
+                全2種・ランダム封入。
+              </p>
+            </div>
+          </div>
+          <!-- ============ / C賞 ============ -->
+
+          <!-- ============ D賞 ============ -->
+          <div class="kuji-card kuji-card--d" id="kuji-card-d">
+            <div class="kuji-card__bar"></div>
+            <div class="kuji-card__img-wrap" aria-hidden="true">
+              🎁
+              <div class="img-placeholder-border"></div>
+            </div>
+            <div class="kuji-card__body">
+              <p class="kuji-card__prize">D 賞</p>
+              <p class="kuji-card__name">キャンフェス2026 オリジナル ステッカーセット</p>
+              <p class="kuji-card__desc">
+                使いやすいミニステッカー5枚セット。<br>
+                ランダムアソート。
+              </p>
+            </div>
+          </div>
+          <!-- ============ / D賞 ============ -->
+
+          <!-- ============ ラストワン賞 ============ -->
+          <div class="kuji-card kuji-card--last-one" id="kuji-card-last-one">
+            <div class="kuji-card__bar"></div>
+            <div class="kuji-card__img-wrap" aria-hidden="true">
+              🌟
+              <div class="img-placeholder-border"></div>
+            </div>
+            <div class="kuji-card__body">
+              <p class="kuji-card__prize">Last One 賞</p>
+              <p class="kuji-card__name">キャンフェス2026 オリジナル アクリルスタンド（豪華仕様）</p>
+              <p class="kuji-card__desc">
+                最後の1枚を引いた方のみに贈られる、<br>
+                限定仕様の特別ラストワン賞！
+              </p>
+            </div>
+          </div>
+          <!-- ============ / ラストワン賞 ============ -->
+
+        </div><!-- /.kuji-grid -->
+
+        <!-- SOLD OUT 使い方のヒント（開発者向けコメント） -->
+        <!--
+        ✏️ 【当日完売更新の方法】
+           景品が完売したら、該当カードの class に「is-soldout」を追加してください。
+           例）<div class="kuji-card kuji-card--a">
+             → <div class="kuji-card kuji-card--a is-soldout">
+           さらに <div class="kuji-card__img-wrap"> 内に
+           <span class="soldout-badge" aria-label="完売">SOLD OUT</span>
+           を追加するとバッジが表示されます。
+        -->
+
+      </div>
+    </section>
+
+    <!-- ========================================================
+         ② ルール・注意事項
+         ========================================================
+    ✏️ 【編集ガイド】ルール・注意事項
+       .rules-item のブロックをコピーして項目を追加できます。
+       重要な項目には class="rules-item rules-item--important" を付けてください。
+    ======================================================== -->
+    <section class="section rules-section" id="rules">
+      <div class="container">
+
+        <h2 class="page-section-title">Rules — ルール・注意事項</h2>
+
+        <ul class="rules-list" role="list">
+
+          <!-- 重要なルール（ゴールドハイライト） -->
+          <li class="rules-item rules-item--important">
+            <span class="rules-item__icon" aria-hidden="true">💰</span>
+            <div class="rules-item__body">
+              <!-- ✏️ 価格を変更してください -->
+              <strong>参加料金 — 1回 500円（税込）</strong>
+              <p>くじ1回につき500円です。景品は引いたくじの賞に応じてお渡しします。釣り銭のないようにご協力ください。</p>
+            </div>
+          </li>
+
+          <li class="rules-item rules-item--important">
+            <span class="rules-item__icon" aria-hidden="true">🔢</span>
+            <div class="rules-item__body">
+              <!-- ✏️ 回数制限を変更してください -->
+              <strong>1回の来場につき 3回まで</strong>
+              <p>お1人様1回の来場ごとに3回までご参加いただけます。公平な運営のためご協力をお願いします。</p>
+            </div>
+          </li>
+
+          <li class="rules-item">
+            <span class="rules-item__icon" aria-hidden="true">⏰</span>
+            <div class="rules-item__body">
+              <!-- ✏️ 開催時間を変更してください -->
+              <strong>開催時間 — 10:00 〜（在庫がなくなり次第終了）</strong>
+              <p>景品の在庫がなくなった時点で終了です。早めのご参加をおすすめします。</p>
+            </div>
+          </li>
+
+          <li class="rules-item">
+            <span class="rules-item__icon" aria-hidden="true">🚫</span>
+            <div class="rules-item__body">
+              <strong>返品・交換不可</strong>
+              <p>一度引いたくじの景品交換や返品は承れません。ご了承の上でご参加ください。</p>
+            </div>
+          </li>
+
+          <li class="rules-item">
+            <span class="rules-item__icon" aria-hidden="true">👶</span>
+            <div class="rules-item__body">
+              <strong>お子様のご参加について</strong>
+              <p>小学生以下のお子様は保護者の方と一緒にご参加ください。</p>
+            </div>
+          </li>
+
+          <li class="rules-item">
+            <span class="rules-item__icon" aria-hidden="true">📢</span>
+            <div class="rules-item__body">
+              <strong>景品情報・在庫状況について</strong>
+              <p>景品の詳細・在庫状況はこのページをリロードして最新情報をご確認ください。当日スタッフへのお問い合わせも可能です。</p>
+            </div>
+          </li>
+
+        </ul><!-- /.rules-list -->
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================
+       フッター
+  ======================================================== -->
+  <footer class="page-footer">
+
+    <strong>一番くじ — キャンフェス 2026</strong>
+
+    <p style="margin-bottom: 10px;">
+      担当：○○学部 △△科 ○年○組<br>
+      ご不明な点は当日スタッフまでお声がけください。
+    </p>
+
+    <p>
+      <a href="../../index.html">← トップページへ戻る</a>
+      &ensp;|&ensp;
+      <a href="../../index.html#projects">他の企画を見る →</a>
+    </p>
+
+  </footer>
+
+  <!-- メニュー自動クローズJS（触らないでください） -->
+  <script src="../../js/menu.js"></script>
+
+</body>
+</html>
