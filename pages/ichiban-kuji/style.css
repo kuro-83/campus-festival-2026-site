@@ -9,77 +9,95 @@
   ✏️ 【カスタマイズガイド】
      このページのデザインを変えるには :root { } の
      CSS変数を変えるのが一番簡単です。
-     アクセントカラー（金色系）を変えると雰囲気が変わります！
+     ゴールドのアクセントカラーを変えると雰囲気が変わります！
 ============================================================
 */
 
 /* ============================================================
    1. このページ専用のカラー変数（上書き・追加）
+   ============================================================
+   ✏️ メインサイト（common.css）の色調に合わせた
+      温かみのあるベージュ×ゴールドのパレットです。
    ============================================================ */
 :root {
-  /* 一番くじページのアクセントカラー（ゴールド系） */
-  --kuji-gold:        #C9922A;
-  --kuji-gold-light:  #E8BF6A;
-  --kuji-gold-pale:   #F5E8C8;
-  --kuji-gold-dark:   #9B6F1A;
+  /* 一番くじのアクセントカラー（メインサイトの --color-accent 寄りのゴールド） */
+  --kuji-gold:        #B59469;   /* common.css の --color-accent と同値 */
+  --kuji-gold-light:  #C9A87A;   /* 少し明るいゴールド */
+  --kuji-gold-pale:   #E8DDD0;   /* common.css の --color-accent-pale と同値 */
+  --kuji-gold-dark:   #9A7A52;   /* common.css の --color-accent-dark と同値 */
 
-  /* ヒーローセクションの背景色（深いネイビー）*/
-  --kuji-hero-bg:     #0D1B2A;
-  --kuji-hero-text:   #F7F4EF;
+  /* ヒーローの背景（深いチョコレートブラウン — sample-project と同じ） */
+  --kuji-hero-bg:     #3D2E22;
+  --kuji-hero-text:   #F7F4EF;   /* 羊皮紙ベージュ */
 
-  /* カードの背景 */
-  --kuji-card-bg:     #16253A;
-  --kuji-card-border: rgba(201, 146, 42, 0.3);
+  /* セクション背景（メインサイトの色調に統一） */
+  --kuji-section-bg:      #F7F4EF;   /* common.css --color-bg */
+  --kuji-section-bg-alt:  #EDE9E2;   /* common.css --color-bg-dark */
 
-  /* 特別賞の色 */
-  --kuji-last-one:    #E63946; /* ラストワン賞 */
-  --kuji-s-prize:     #F4D35E; /* S賞 */
+  /* カードの背景・ボーダー（ライト系） */
+  --kuji-card-bg:     #FDFAF6;   /* common.css --color-bg-card */
+  --kuji-card-border: #E8DDD0;   /* common.css --color-accent-pale */
+
+  /* 本文テキスト（メインサイトに統一） */
+  --kuji-text:        #4A3B32;   /* common.css --color-text */
+  --kuji-text-sub:    #8A7060;   /* common.css --color-text-sub */
+  --kuji-text-muted:  #B0A090;   /* common.css --color-text-muted */
+
+  /* 特別賞の強調色 */
+  --kuji-last-one:    #C0392B;   /* ラストワン賞（落ち着いた赤） */
+  --kuji-s-prize:     #B8860B;   /* S賞（ダークゴールド） */
 }
 
 /* ============================================================
-   2. ページ全体（ダークテーマ上書き）
+   2. ページ全体（common.css の body を上書きしない — 継承）
+   ============================================================
+   body の背景色はメインサイトと同じ --color-bg（ベージュ）を
+   使うため、ここでは上書きしません。
    ============================================================ */
-body {
-  background-color: var(--kuji-hero-bg);
-  color: var(--kuji-hero-text);
-}
 
 /* ============================================================
    3. 企画ページ ヒーローヘッダー
    ============================================================ */
 .page-hero {
   background-color: var(--kuji-hero-bg);
+  /* 微細なドット装飾（sample-project.style.css と同パターン） */
   background-image:
-    radial-gradient(ellipse at 50% 0%, rgba(201,146,42,0.25) 0%, transparent 60%),
-    radial-gradient(circle, rgba(201,146,42,0.2) 1px, transparent 1px),
-    radial-gradient(circle, rgba(232,191,106,0.12) 1px, transparent 1px);
-  background-size: 100% 100%, 70px 70px, 110px 110px;
-  background-position: center, 0 0, 35px 35px;
+    radial-gradient(circle, rgba(181, 148, 105, 0.18) 1px, transparent 1px),
+    radial-gradient(circle, rgba(181, 148, 105, 0.10) 1px, transparent 1px);
+  background-size: 60px 60px, 90px 90px;
+  background-position: 0 0, 30px 30px;
   padding: var(--space-xl) var(--space-sm) var(--space-lg);
   text-align: center;
   position: relative;
   overflow: hidden;
 }
 
-/* ヒーロー上部の金の輝きライン */
+/* ヒーロー上部の細いゴールドライン */
 .page-hero::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 3px;
-  background: linear-gradient(90deg, transparent, var(--kuji-gold-light), var(--kuji-gold), var(--kuji-gold-light), transparent);
+  background: linear-gradient(90deg,
+    transparent,
+    var(--kuji-gold-light),
+    var(--kuji-gold),
+    var(--kuji-gold-light),
+    transparent);
 }
 
-/* タグ */
+/* 「企画種別」タグ */
 .page-hero__tag {
   display: inline-block;
-  border: 1px solid rgba(201,146,42,0.5);
+  border: 1px solid rgba(181, 148, 105, 0.4);
   border-radius: 999px;
   padding: 5px 20px;
   font-family: var(--font-display);
   font-size: 0.75rem;
   letter-spacing: 0.25em;
-  color: var(--kuji-gold-light);
+  color: rgba(247, 244, 239, 0.7);
   margin-bottom: var(--space-sm);
   text-transform: uppercase;
 }
@@ -95,20 +113,20 @@ body {
   margin-bottom: var(--space-xs);
 }
 
-/* 一番くじ 強調文字（金色） */
+/* 「当日限定 一番くじ」強調テキスト（ゴールド） */
 .page-hero__title .kuji-emphasis {
-  color: var(--kuji-gold-light);
+  color: var(--kuji-gold-pale);
   font-weight: 600;
 }
 
 /* 日時・場所情報枠 */
 .page-hero__info {
   display: inline-block;
-  border: 1px solid rgba(201,146,42,0.3);
+  border: 1px solid rgba(181, 148, 105, 0.3);
   border-radius: var(--radius-sm);
   padding: 14px 24px;
   margin-top: var(--space-sm);
-  background: rgba(201,146,42,0.06);
+  background: rgba(181, 148, 105, 0.08);
   text-align: left;
 }
 
@@ -117,7 +135,7 @@ body {
   align-items: center;
   gap: 10px;
   font-size: 0.87rem;
-  color: rgba(247,244,239,0.75);
+  color: rgba(247, 244, 239, 0.75);
   letter-spacing: 0.05em;
 }
 
@@ -131,7 +149,7 @@ body {
 }
 
 .page-hero__info-label {
-  color: var(--kuji-gold-light);
+  color: var(--kuji-gold-pale);
   font-size: 0.72rem;
   letter-spacing: 0.15em;
   font-family: var(--font-display);
@@ -146,8 +164,8 @@ body {
   font-size: 1.1rem;
   font-weight: 400;
   letter-spacing: 0.15em;
-  color: var(--kuji-hero-text);
-  border-bottom: 1px solid rgba(201,146,42,0.25);
+  color: var(--kuji-text);
+  border-bottom: 1px solid var(--kuji-gold-pale);
   padding-bottom: 10px;
   margin-bottom: var(--space-sm);
   display: flex;
@@ -161,7 +179,7 @@ body {
   display: inline-block;
   width: 3px;
   height: 1em;
-  background: linear-gradient(180deg, var(--kuji-gold-light), var(--kuji-gold));
+  background-color: var(--kuji-gold);
   border-radius: 2px;
   flex-shrink: 0;
 }
@@ -170,7 +188,7 @@ body {
    5. 景品ラインナップ一覧（グリッドレイアウト）
    ============================================================ */
 .lineup-section {
-  background-color: var(--kuji-hero-bg);
+  background-color: var(--kuji-section-bg);
 }
 
 .kuji-grid {
@@ -202,25 +220,25 @@ body {
 }
 
 .kuji-card:hover {
-  box-shadow: 0 4px 24px rgba(201,146,42,0.18);
+  box-shadow: var(--shadow-md);
   transform: translateY(-3px);
-  border-color: rgba(201,146,42,0.6);
+  border-color: var(--kuji-gold);
 }
 
-/* カード上部のカラーバー */
+/* カード上部のカラーバー（デフォルト：ブロンズゴールド） */
 .kuji-card__bar {
   height: 4px;
   background: linear-gradient(90deg, var(--kuji-gold-dark), var(--kuji-gold-light));
 }
 
-/* ラストワン賞のバー */
+/* ラストワン賞のバー（赤系） */
 .kuji-card--last-one .kuji-card__bar {
-  background: linear-gradient(90deg, #8B0000, var(--kuji-last-one), #ff8c94);
+  background: linear-gradient(90deg, #8B2500, var(--kuji-last-one), #E57368);
 }
 
-/* S賞のバー */
+/* S賞のバー（ダークゴールド → 明るいゴールド） */
 .kuji-card--s .kuji-card__bar {
-  background: linear-gradient(90deg, #B8860B, var(--kuji-s-prize), #fffacd);
+  background: linear-gradient(90deg, var(--kuji-gold-dark), var(--kuji-s-prize), #D4A853);
 }
 
 /* 画像エリア */
@@ -228,7 +246,7 @@ body {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
-  background: linear-gradient(135deg, #1A2E45, #0D1B2A);
+  background-color: var(--kuji-section-bg-alt);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -240,7 +258,7 @@ body {
 .kuji-card__img-wrap .img-placeholder-border {
   position: absolute;
   inset: 10px;
-  border: 1px dashed rgba(201,146,42,0.2);
+  border: 1px dashed var(--kuji-gold-pale);
   border-radius: var(--radius-sm);
   pointer-events: none;
 }
@@ -249,7 +267,7 @@ body {
    💡 【SOLD OUT 表示用クラス — 当日リアルタイム完売更新用】
    ============================================================
    景品カードに `is-soldout` クラスを付与すると、
-   画像の上に半透明の黒背景と「SOLD OUT」の赤バッジが重なります。
+   画像の上に半透明の背景と「SOLD OUT」の赤バッジが重なります。
 
    使い方：
      <div class="kuji-card is-soldout">
@@ -257,12 +275,12 @@ body {
      </div>
    ============================================================ */
 
-/* SOLD OUT オーバーレイ（画像エリア全体を覆う黒背景） */
+/* SOLD OUT オーバーレイ（画像エリア全体を覆う） */
 .kuji-card.is-soldout .kuji-card__img-wrap::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(61, 46, 34, 0.55);   /* ヒーローと同系ブラウン、半透明 */
   z-index: 1;
   border-radius: 0;
 }
@@ -282,13 +300,13 @@ body {
   padding: 6px 18px;
   border-radius: 4px;
   z-index: 2;
-  box-shadow: 0 2px 14px rgba(230, 57, 70, 0.65);
+  box-shadow: 0 2px 10px rgba(192, 57, 43, 0.45);
   white-space: nowrap;
 }
 
 /* SOLD OUT 時はカードを薄く */
 .kuji-card.is-soldout {
-  opacity: 0.72;
+  opacity: 0.7;
 }
 
 /* SOLD OUT 時の景品名に取り消し線 */
@@ -309,33 +327,33 @@ body {
   font-size: 0.7rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--kuji-gold-light);
-  background: rgba(201,146,42,0.12);
-  border: 1px solid rgba(201,146,42,0.3);
+  color: var(--kuji-gold-dark);
+  background: rgba(181, 148, 105, 0.1);
+  border: 1px solid var(--kuji-gold-pale);
   border-radius: 999px;
   padding: 3px 12px;
   margin-bottom: 8px;
 }
 
-/* ラストワン賞ラベル */
+/* ラストワン賞ラベル（赤系） */
 .kuji-card--last-one .kuji-card__prize {
-  color: #ff8c94;
-  background: rgba(230,57,70,0.12);
-  border-color: rgba(230,57,70,0.35);
+  color: var(--kuji-last-one);
+  background: rgba(192, 57, 43, 0.08);
+  border-color: rgba(192, 57, 43, 0.25);
 }
 
-/* S賞ラベル */
+/* S賞ラベル（ゴールド強調） */
 .kuji-card--s .kuji-card__prize {
   color: var(--kuji-s-prize);
-  background: rgba(244,211,94,0.1);
-  border-color: rgba(244,211,94,0.3);
+  background: rgba(184, 134, 11, 0.08);
+  border-color: rgba(184, 134, 11, 0.25);
 }
 
 /* 景品名 */
 .kuji-card__name {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--kuji-hero-text);
+  color: var(--kuji-text);
   line-height: 1.4;
   margin-bottom: 6px;
 }
@@ -343,7 +361,7 @@ body {
 /* 景品説明文 */
 .kuji-card__desc {
   font-size: 0.78rem;
-  color: rgba(247,244,239,0.5);
+  color: var(--kuji-text-sub);
   line-height: 1.7;
 }
 
@@ -351,7 +369,7 @@ body {
    6. ルール・注意事項セクション
    ============================================================ */
 .rules-section {
-  background-color: #0A1520;
+  background-color: var(--kuji-section-bg-alt);
 }
 
 .rules-list {
@@ -368,6 +386,11 @@ body {
   border: 1px solid var(--kuji-card-border);
   border-radius: var(--radius-sm);
   align-items: flex-start;
+  transition: box-shadow 0.2s ease;
+}
+
+.rules-item:hover {
+  box-shadow: var(--shadow-sm);
 }
 
 .rules-item__icon {
@@ -380,64 +403,56 @@ body {
   display: block;
   font-size: 0.92rem;
   font-weight: 600;
-  color: var(--kuji-hero-text);
+  color: var(--kuji-text);
   margin-bottom: 3px;
 }
 
 .rules-item__body p {
   font-size: 0.82rem;
-  color: rgba(247,244,239,0.55);
+  color: var(--kuji-text-sub);
   line-height: 1.7;
   margin: 0;
 }
 
-/* 重要な注意（ゴールドハイライト） */
+/* 重要な注意（ゴールドのハイライトボーダー） */
 .rules-item--important {
-  border-color: rgba(201,146,42,0.45);
-  background: rgba(201,146,42,0.06);
+  border-color: var(--kuji-gold);
+  border-left-width: 3px;
+  background: rgba(181, 148, 105, 0.05);
 }
 
 .rules-item--important .rules-item__body strong {
-  color: var(--kuji-gold-light);
+  color: var(--kuji-gold-dark);
 }
 
 /* ============================================================
    7. フッター
    ============================================================ */
 .page-footer {
-  background-color: #080F18;
-  color: rgba(247,244,239,0.45);
+  background-color: var(--kuji-hero-bg);
+  color: rgba(247, 244, 239, 0.55);
   text-align: center;
   padding: var(--space-md) var(--space-sm);
   font-size: 0.78rem;
   letter-spacing: 0.08em;
-  border-top: 1px solid rgba(201,146,42,0.15);
 }
 
 .page-footer strong {
   display: block;
   font-family: var(--font-display);
-  font-size: 0.88rem;
-  color: var(--kuji-gold-light);
+  font-size: 0.9rem;
+  color: rgba(247, 244, 239, 0.85);
   letter-spacing: 0.2em;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .page-footer a {
-  color: var(--kuji-gold);
+  color: var(--kuji-gold-pale);
 }
 
 /* ============================================================
-   8. セクション背景（common.css の .section 上書き）
+   8. セクション背景（common.css の .section と整合）
    ============================================================ */
 .section {
-  background-color: var(--kuji-hero-bg);
-}
-
-/* ============================================================
-   9. ナビゲーションバー（ダークテーマ対応 — common.css 上書き）
-   ============================================================ */
-.site-nav {
-  background-color: rgba(8, 15, 24, 0.95);
-  border-bottom-color: rgba(201,146,42,0.2);
+  background-color: var(--kuji-section-bg);
 }

@@ -307,6 +307,216 @@
     }
 
     /* ---------------------------------------------------
+       一番くじ 追従フローティングバナー
+    --------------------------------------------------- */
+
+    /* 女手近くからかっている縦型バナー（画面右側固定） */
+    .floating-kuji-banner {
+      position: fixed;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 999;
+      display: flex;
+      align-items: stretch;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+    }
+
+    /* 非表示時（.is-hidden クラスで右外に退避） */
+    .floating-kuji-banner.is-hidden {
+      transform: translateY(-50%) translateX(calc(100% + 2px));
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* 左側の「開く」タブ */
+    .floating-kuji-banner__tab {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      background: var(--color-accent);
+      border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+      cursor: pointer;
+      writing-mode: vertical-rl;
+      font-family: var(--font-display);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      color: #fff;
+      padding: 12px 0;
+      user-select: none;
+      border: none;
+      transition: background-color 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .floating-kuji-banner__tab:hover {
+      background-color: var(--color-accent-dark);
+    }
+
+    /* メインカード本体 */
+    .floating-kuji-banner__card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      background-color: var(--color-bg-card);
+      border: 1.5px solid var(--color-accent);
+      border-right: none;
+      border-radius: var(--radius-md) 0 0 var(--radius-md);
+      padding: 18px 14px 16px;
+      width: 130px;
+      gap: 8px;
+      box-shadow: -4px 0 20px rgba(74, 59, 50, 0.12);
+      text-decoration: none;
+      color: var(--color-text);
+      position: relative;
+      overflow: hidden;
+      transition: background-color 0.2s ease;
+    }
+
+    .floating-kuji-banner__card:hover {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      opacity: 1;
+    }
+
+    /* カード上部のゴールドライン */
+    .floating-kuji-banner__card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--color-accent-dark), var(--color-accent), #D4A853);
+    }
+
+    /* 当日限定バッジ */
+    .floating-kuji-banner__badge {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      color: var(--color-accent-dark);
+      border: 1px solid var(--color-accent-pale);
+      border-radius: 999px;
+      padding: 2px 8px;
+      background: rgba(181, 148, 105, 0.08);
+      white-space: nowrap;
+    }
+
+    /* アイコン絵文字 */
+    .floating-kuji-banner__icon {
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+
+    /* タイトル */
+    .floating-kuji-banner__title {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 600;
+      line-height: 1.35;
+      color: var(--color-text);
+      letter-spacing: 0.04em;
+    }
+
+    /* 詳細リンク文字 */
+    .floating-kuji-banner__link-text {
+      font-size: 0.65rem;
+      color: var(--color-accent-dark);
+      font-family: var(--font-display);
+      letter-spacing: 0.1em;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    /* 閉じるボタン */
+    .floating-kuji-banner__close {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      line-height: 1;
+      transition: background-color 0.15s ease, color 0.15s ease;
+      flex-shrink: 0;
+      z-index: 1;
+    }
+
+    .floating-kuji-banner__close:hover {
+      background-color: var(--color-accent-pale);
+      color: var(--color-text);
+    }
+
+    /* ====== スマホ対応 ======
+       スマホでも右側縦中央固定を維持し、サイズをコンパクトに縮小する。
+       ⚠️ top/transform は継承のまま（変更しない）— 縦中央固定を維持 */
+    @media (max-width: 768px) {
+      /* バナー本体: top/transform は変更せずサイズ調整のみ */
+      .floating-kuji-banner {
+        /* position: fixed / right: 0 / top: 50% / transform: translateY(-50%)
+           はデスクトップと共通 — ここでは上書きしない */
+        z-index: 999;
+      }
+
+      /* 非表示時: 右外への退避アニメーション（translateY(-50%) は維持） */
+      .floating-kuji-banner.is-hidden {
+        transform: translateY(-50%) translateX(calc(100% + 2px));
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      /* 開くタブ: やや細く */
+      .floating-kuji-banner__tab {
+        width: 22px;
+        font-size: 0.55rem;
+        padding: 10px 0;
+      }
+
+      /* カード: 幅・パディング・フォントを1〜2割コンパクト化 */
+      .floating-kuji-banner__card {
+        width: 112px;
+        padding: 16px 10px 14px;
+      }
+
+      .floating-kuji-banner__icon {
+        font-size: 1.55rem;
+      }
+
+      .floating-kuji-banner__title {
+        font-size: 0.74rem;
+      }
+
+      .floating-kuji-banner__badge {
+        font-size: 0.52rem;
+        padding: 2px 6px;
+      }
+
+      .floating-kuji-banner__link-text {
+        font-size: 0.6rem;
+      }
+
+      /* 閉じるボタン: タップ領域を44×44px確保（アクセシビリティ基準） */
+      .floating-kuji-banner__close {
+        width: 28px;
+        height: 28px;
+        top: 4px;
+        right: 4px;
+        font-size: 1rem;
+      }
+    }
+
+    /* ---------------------------------------------------
        キャンパスマップセクション
     --------------------------------------------------- */
     .map-section {
@@ -351,119 +561,6 @@
       background-color: var(--color-bg);
     }
 
-    /* ---------------------------------------------------
-       一番くじ 宣伝バナーセクション
-    --------------------------------------------------- */
-    .kuji-banner-section {
-      background-color: #0D1B2A;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* 上下のゴールドライン */
-    .kuji-banner-section::before,
-    .kuji-banner-section::after {
-      content: '';
-      position: absolute;
-      left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #C9922A, #E8BF6A, #C9922A, transparent);
-    }
-    .kuji-banner-section::before { top: 0; }
-    .kuji-banner-section::after  { bottom: 0; }
-
-    /* 背景のキラキラドット装飾 */
-    .kuji-banner__bg-dots {
-      position: absolute;
-      inset: 0;
-      background-image:
-        radial-gradient(ellipse at 50% 50%, rgba(201,146,42,0.15) 0%, transparent 65%),
-        radial-gradient(circle, rgba(201,146,42,0.18) 1px, transparent 1px),
-        radial-gradient(circle, rgba(232,191,106,0.10) 1px, transparent 1px);
-      background-size: 100% 100%, 60px 60px, 95px 95px;
-      background-position: center, 0 0, 30px 30px;
-      pointer-events: none;
-    }
-
-    .kuji-banner {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: var(--space-lg) var(--space-sm);
-    }
-
-    /* バナー上部のバッジ */
-    .kuji-banner__badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid rgba(201,146,42,0.5);
-      border-radius: 999px;
-      padding: 5px 18px;
-      font-family: var(--font-display);
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
-      color: #E8BF6A;
-      margin-bottom: var(--space-sm);
-      background: rgba(201,146,42,0.06);
-    }
-
-    /* バナー見出し */
-    .kuji-banner__title {
-      font-family: var(--font-display);
-      font-size: clamp(1.3rem, 5.5vw, 2.2rem);
-      font-weight: 400;
-      letter-spacing: 0.04em;
-      line-height: 1.4;
-      color: #F7F4EF;
-      margin-bottom: var(--space-xs);
-    }
-
-    .kuji-banner__title .kuji-banner__accent {
-      color: #E8BF6A;
-      font-weight: 600;
-    }
-
-    .kuji-banner__subtitle {
-      font-size: 0.88rem;
-      color: rgba(247,244,239,0.6);
-      letter-spacing: 0.1em;
-      margin-bottom: var(--space-md);
-    }
-
-    /* バナーボタン */
-    .kuji-banner__btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: linear-gradient(135deg, #9B6F1A, #C9922A, #E8BF6A);
-      color: #0D1B2A;
-      font-family: var(--font-display);
-      font-size: 0.9rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      padding: 14px 32px;
-      border-radius: 999px;
-      text-decoration: none;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
-      box-shadow: 0 4px 20px rgba(201,146,42,0.4);
-    }
-
-    .kuji-banner__btn:hover {
-      transform: translateY(-2px) scale(1.03);
-      box-shadow: 0 8px 30px rgba(201,146,42,0.55);
-      color: #0D1B2A;
-      opacity: 0.92;
-    }
-
-    .kuji-banner__btn-arrow {
-      font-size: 1rem;
-      transition: transform 0.2s ease;
-    }
-
-    .kuji-banner__btn:hover .kuji-banner__btn-arrow {
-      transform: translateX(3px);
-    }
 
     .caution-list {
       display: flex;
@@ -764,35 +861,51 @@
   </section>
 
   <!-- ========================================================
-       🔥 一番くじ 宣伝バナー（#schedule の直後）
+       🔥 一番くじ 追従フローティングバナー（画面右側固定）
+       ✅ この要素は位置：body内のどこに置いてもOK（fixed配置のため）
   ======================================================== -->
-  <section class="kuji-banner-section" id="kuji-banner" aria-label="一番くじ告知バナー">
-    <!-- 背景装飾（触らないでOK） -->
-    <div class="kuji-banner__bg-dots" aria-hidden="true"></div>
+  <div class="floating-kuji-banner" id="floating-kuji-banner" aria-label="一番くじ追従バナー" role="complementary">
 
-    <div class="kuji-banner">
-      <!-- バッジ -->
-      <p class="kuji-banner__badge">✦ 当日限定 ✦</p>
+    <!-- 左側の「開く」タブ（非表示中にクリックすると再表示） -->
+    <button class="floating-kuji-banner__tab"
+            id="floating-kuji-open-tab"
+            aria-label="一番くじバナーを開く"
+            style="display:none;"
+            onclick="document.getElementById('floating-kuji-banner').classList.remove('is-hidden'); this.style.display='none';">
+      🎟 くじ
+    </button>
 
-      <!-- 見出し -->
-      <h2 class="kuji-banner__title">
-        🔥 <span class="kuji-banner__accent">キャンフェス 2026</span><br>
-        一番くじ 開催決定！
-      </h2>
+    <!-- カード本体（リンクと閉じるボタン） -->
+    <a href="pages/ichiban-kuji/index.html"
+       class="floating-kuji-banner__card"
+       id="floating-kuji-card"
+       aria-label="一番くじ特設ページへ">
 
-      <!-- サブテキスト -->
-      <p class="kuji-banner__subtitle">
-        S賞〜ラストワン賞まで、豪華景品が当たる当日限定くじ。<br>
-        お見逃しなく！
-      </p>
+      <!-- 閉じるボタン -->
+      <button class="floating-kuji-banner__close"
+              id="floating-kuji-close"
+              aria-label="バナーを閉じる"
+              onclick="event.preventDefault(); event.stopPropagation();
+                       document.getElementById('floating-kuji-banner').classList.add('is-hidden');
+                       var tab = document.getElementById('floating-kuji-open-tab');
+                       if(tab) tab.style.display='flex';">
+        &times;
+      </button>
 
-      <!-- CTAボタン -->
-      <a href="pages/ichiban-kuji/index.html" class="kuji-banner__btn" id="kuji-banner-cta">
-        景品一覧・詳細はこちら
-        <span class="kuji-banner__btn-arrow" aria-hidden="true">→</span>
-      </a>
-    </div>
-  </section>
+      <!-- 当日限定バッジ -->
+      <span class="floating-kuji-banner__badge">✦ 当日限定 ✦</span>
+
+      <!-- アイコン -->
+      <span class="floating-kuji-banner__icon" aria-hidden="true">🔥</span>
+
+      <!-- タイトル -->
+      <p class="floating-kuji-banner__title">一番くじ<br>開催決定！</p>
+
+      <!-- 詳細リンク -->
+      <span class="floating-kuji-banner__link-text">詳細はこちら →</span>
+
+    </a>
+  </div><!-- /.floating-kuji-banner -->
 
   <!-- ========================================================
        ③ 企画一覧セクション
@@ -1162,6 +1275,23 @@
 
   <!-- メニュー自動クローズJS（メニューリンクをタップしたときに自動で閉じます） -->
   <script src="js/menu.js"></script>
+
+  <!-- 追従バナー：閉じてから再スクロールしたら再表示しない（セッション中のみ非表示記憶） -->
+  <script>
+    (function () {
+      var banner  = document.getElementById('floating-kuji-banner');
+      var openTab = document.getElementById('floating-kuji-open-tab');
+      // セッション中に閉じた場合はそのまま非表示にする（任意）
+      // ここでは閉じボタンのみで制御するため追加処理なし
+      // バナーを再表示するタブは is-hidden 時のみ表示
+      if (banner && openTab) {
+        var observer = new MutationObserver(function () {
+          openTab.style.display = banner.classList.contains('is-hidden') ? 'flex' : 'none';
+        });
+        observer.observe(banner, { attributes: true, attributeFilter: ['class'] });
+      }
+    })();
+  </script>
 
 </body>
 
