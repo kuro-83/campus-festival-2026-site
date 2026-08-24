@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--
+  ✏️ 【編集ガイド】meta description
+     ゲームの説明文です。ネタバレにならない範囲で書いてください。
+  -->
+  <meta name="description" content="マツッター — キャンフェス2026 謎解きゲーム「キャンフェスデマ事件」の捜査ページ。SNSの投稿を読み解いて犯人を暴け。">
+
+  <!--
+  ✏️ 【編集ガイド】ページタイトル
+  -->
+  <title>マツッター | キャンフェス 2026 謎解き</title>
+
+  <!-- Google Fonts: ゲーム全体に使用するフォント -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <!--
+  ★ common.css は読み込まない（マツッターは独立したUIのため）
+     このゲーム専用のstyle.cssのみ使用します。
+  -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ========================================================
+       マツッター アプリバー（フィクションのSNSヘッダー）
+  ======================================================== -->
+  <header class="app-header" id="top">
+    <div class="app-header__inner">
+      <!-- ロゴ・タイトル -->
+      <div class="app-header__logo">
+        <!-- ✏️ マツッターのロゴ絵文字（変更可） -->
+        <span class="app-header__logo-icon" aria-hidden="true">🔍</span>
+        <span class="app-header__logo-text">マツッター</span>
+      </div>
+      <!-- ✏️ 事件名ハッシュタグ（変更可） -->
+      <div class="app-header__tag">#キャンフェスデマ事件</div>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       企画紹介へ戻るボタン（上部）
+  ======================================================== -->
+  <div class="back-bar">
+    <!--
+    ✏️ 【編集ガイド】href のリンク先
+       このゲームが mystery-quest/ から起動される想定のリンクです。
+    -->
+    <a href="../mystery-quest/index.html" class="back-bar__link" id="btn-back-top">
+      ← 企画紹介ページに戻る
+    </a>
+  </div>
+
+  <!-- ========================================================
+       オープニング演出バナー
+  ======================================================== -->
+  <div class="opening-banner" id="opening-banner" aria-live="polite">
+    <!--
+    ✏️ 【編集ガイド】オープニング文
+       ゲーム冒頭に表示される「世界観の説明」部分です。
+    -->
+    <p class="opening-banner__label">⚠️ SYSTEM ALERT</p>
+    <h1 class="opening-banner__title">キャンフェスデマ事件 — 捜査ファイル</h1>
+    <p class="opening-banner__body">
+      SNS「マツッター」上に、キャンフェス2026に関する<strong>不審な投稿</strong>が確認された。<br>
+      目撃者・関係者の証言を読み解き、<strong>デマを流した犯人</strong>を特定せよ。<br>
+      <span class="opening-banner__hint">※ タイムラインの投稿を読んでヒントを集め、下のキーワード欄に答えを入力してください。</span>
+    </p>
+  </div>
+
+  <!-- ========================================================
+       タイムライン本体
+  ======================================================== -->
+  <main class="timeline" id="timeline" role="main" aria-label="マツッター タイムライン">
+
+    <!-- ============================================================
+         ① 冒頭の「怪しい投稿」— 事件発端のデマポスト
+         ✏️ 犯人・ストーリーに合わせて文言を変更してください。
+    ============================================================ -->
+    <article class="post post--suspect" data-post="intro">
+      <div class="post__avatar post__avatar--suspect" aria-hidden="true">👤</div>
+      <div class="post__body">
+        <div class="post__header">
+          <!-- ✏️ 犯人アカウント名・ユーザー名を変更してください -->
+          <span class="post__name">謎の投稿者 X</span>
+          <span class="post__handle">@unknown_x_2026</span>
+          <span class="post__time">09:12</span>
+        </div>
+        <p class="post__text">
+          ［緊急拡散希望］キャンフェス、今日中止らしいよ。
+          運営から公式アナウンスあった。もう引き返せない。<br>
+          <span class="post__hashtag">#キャンフェス2026</span>
+          <span class="post__hashtag">#中止</span>
+          <span class="post__hashtag">#緊急</span>
+        </p>
+        <div class="post__footer">
+          <span class="post__stat">🔁 142</span>
+          <span class="post__stat">❤️ 38</span>
+          <span class="post__badge post__badge--warning">⚠️ デマ投稿</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================================================
+         ② ヒント投稿群（1〜6問目）
+         ✏️ data-hint="1"〜"6" の投稿内容を謎解きに合わせて書き換え
+    ============================================================ -->
+
+    <!-- ヒント投稿 1 -->
+    <article class="post post--witness" data-post="hint" data-hint="1">
+      <div class="post__avatar" aria-hidden="true">🧑‍🎓</div>
+      <div class="post__body">
+        <div class="post__header">
+          <span class="post__name">たろちゃん</span>
+          <span class="post__handle">@taro_campfes</span>
+          <span class="post__time">09:18</span>
+        </div>
+        <p class="post__text">
+          <!-- ✏️ ヒント1の文章 -->
+          え、中止？！さっき正門で<strong>「M」と書かれたステッカー</strong>が貼られた看板を見たけど…
+          あれが怪しいのかな。<span class="post__hashtag">#キャンフェスデマ事件</span>
+        </p>
+        <div class="post__footer">
+          <span class="post__stat">🔁 23</span>
+          <span class="post__stat">❤️ 87</span>
+          <span class="post__hint-badge">🔎 ヒント①</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ヒント投稿 2 -->
+    <article class="post post--witness" data-post="hint" data-hint="2">
+      <div class="post__avatar" aria-hidden="true">👩‍🔬</div>
+      <div class="post__body">
+        <div class="post__header">
+          <span class="post__name">花子 探偵</span>
+          <span class="post__handle">@hanako_detective</span>
+          <span class="post__time">09:31</span>
+        </div>
+        <p class="post__text">
+          <!-- ✏️ ヒント2の文章 -->
+          不審な投稿のIPログを辿ったら…発信場所は<strong>「A棟 3階」</strong>の端末から。
+          あの場所には誰がいたんだろう。<span class="post__hashtag">#調査中</span>
+        </p>
+        <div class="post__footer">
+          <span class="post__stat">🔁 61</span>
+          <span class="post__stat">❤️ 112</span>
+          <span class="post__hint-badge">🔎 ヒント②</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ヒント投稿 3 -->
+    <article class="post post--witness" data-post="hint" data-hint="3">
+      <div class="post__avatar" aria-hidden="true">🕵️</div>
+      <div class="post__body">
+        <div class="post__header">
+          <span class="post__name">松田 捜査官</span>
+          <span class="post__handle">@matsuda_detective</span>
+          <span class="post__time">09:45</span>
+        </div>
+        <p class="post__text">
+          <!-- ✏️ ヒント3の文章 -->
+          目撃情報：投稿直前、<strong>黒いパーカーの人物</strong>が図書館前のベンチに座ってスマホを操作していた。
+          手元には<strong>「5」と書かれたメモ</strong>が…<span class="post__hashtag">#目撃者募集</span>
+        </p>
+        <div class="post__footer">
+          <span class="post__stat">🔁 89</span>
+          <span class="post__stat">❤️ 204</span>
+          <span class="post__hint-badge">🔎 ヒント③</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ヒント投稿 4 -->
+    <article class="post post--witness" data-post="hint" data-hint="4">
+      <div class="post__avatar" aria-hidden="true">📸</div>
+      <div class="post__body">
+        <div class="post__header">
+          <span class="post__name">写真部 ゆい</span>
+          <span class="post__handle">@yui_photo_club</span>
+          <span class="post__time">10:02</span>
+        </div>
+        <p class="post__text">
+          <!-- ✏️ ヒント4の文章 -->
+          写真整理してたら偶然写ってた！9時10分ごろ、A棟3階の窓から外を覗いてる人物。
+          <strong>名札に「T・S」</strong>って書いてあるっぽい…？<span class="post__hashtag">#証拠写真</span>
+        </p>
+        <div class="post__footer">
+          <span class="post__stat">🔁 310</span>
+          <span class="post__stat">❤️ 521</span>
+          <span class="post__hint-badge">🔎 ヒント④</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ヒント投稿 5 -->
+    <article class="post post--witness" data-post="hint" data-hint="5">
+      <div class="post__avatar" aria-hidden="true">🧑‍💻</div>
+      <div class="post__body">
+        <div class="post__header">
+          <span class="post__name">情報部 けんた</span>
+          <span class="post__handle">@kenta_itclub</span>
+          <span class="post__time">10:15</span>
+        </div>
+        <p class="post__text">
+          <!-- ✏️ ヒント5の文章 -->
+          アカウント @unknown_x_2026 を解析したら
+          プロフィール画像のメタデータに<strong>「Matsuda_2026」</strong>という文字列が残ってた。
+          これ、本名じゃないか？<span class="post__hashtag">#デジタル捜査</span>
+        </p>
+        <div class="post__footer">
+          <span class="post__stat">🔁 178</span>
+          <span class="post__stat">❤️ 399</span>
+          <span class="post__hint-badge">🔎 ヒント⑤</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ヒント投稿 6 -->
+    <article class="post post--witness" data-post="hint" data-hint="6">
+      <div class="post__avatar" aria-hidden="true">👮</div>
+      <div class="post__body">
+        <div class="post__header">
+          <span class="post__name">実行委員長 あおい</span>
+          <span class="post__handle">@aoi_committee</span>
+          <span class="post__time">10:29</span>
+        </div>
+        <p class="post__text">
+          <!-- ✏️ ヒント6の文章 -->
+          みなさん、落ち着いてください。キャンフェスは<strong>予定通り開催</strong>です！
+          デマを流した人物の特定を進めています。
+          心当たりのある方はDMを。<span class="post__hashtag">#キャンフェス開催</span>
+        </p>
+        <div class="post__footer">
+          <span class="post__stat">🔁 892</span>
+          <span class="post__stat">❤️ 1.2K</span>
+          <span class="post__hint-badge">🔎 ヒント⑥</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================================================
+         ③ キーワード入力エリア（1〜6問目クリア用）
+         ✏️ 正解キーワードは script.js の STAGE_ANSWER で設定
+    ============================================================ -->
+    <div class="input-zone" id="input-zone-stage1">
+      <div class="input-zone__inner">
+        <p class="input-zone__label">🔐 捜査コードを入力</p>
+        <!--
+        ✏️ 問題の指示文（変更可）
+        -->
+        <p class="input-zone__question">
+          投稿を読んで答えをまとめよ。<br>
+          <strong>1〜6問の答えを合わせた「捜査コード」</strong>を入力してください。
+        </p>
+        <div class="input-zone__form" role="form" aria-label="捜査コード入力フォーム">
+          <input
+            type="text"
+            id="stage1-input"
+            class="input-zone__field"
+            placeholder="捜査コードを入力…"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            aria-label="捜査コード入力欄"
+          >
+          <button
+            type="button"
+            id="stage1-submit"
+            class="input-zone__btn"
+            aria-label="捜査コードを送信"
+          >
+            送信 ▶
+          </button>
+        </div>
+        <p class="input-zone__error" id="stage1-error" role="alert" aria-live="assertive" hidden>
+          ❌ 捜査コードが違います。もう一度確認してください。
+        </p>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         ④ 最終問題ポスト（stage1クリア後にJSで出現）
+         ✏️ 最終問題・正解は script.js の FINAL_ANSWER で設定
+    ============================================================ -->
+    <article class="post post--final" id="final-post" data-post="final" hidden aria-live="polite">
+      <div class="post__avatar post__avatar--suspect" aria-hidden="true">💀</div>
+      <div class="post__body">
+        <div class="post__header">
+          <span class="post__name post__name--red">謎の投稿者 X（正体判明）</span>
+          <span class="post__handle">@unknown_x_2026</span>
+          <span class="post__time">10:44</span>
+        </div>
+        <!--
+        ✏️ 【編集ガイド】最終問題の文章
+           犯人から捜査チームへの「最後の挑戦状」をここに書きます。
+        -->
+        <p class="post__text">
+          ……よくここまで来た。だが、まだ終わりじゃない。<br>
+          最後にこれに答えてみろ。<br><br>
+          <span class="post__final-question">
+            ❓ 最終問題：私の本当の名前（フルネーム）は何か？<br>
+            <small>（ヒント：投稿を全部読み返すと答えが見えてくる）</small>
+          </span>
+        </p>
+        <div class="post__footer">
+          <span class="post__stat">🔁 ???</span>
+          <span class="post__stat">❤️ 0</span>
+          <span class="post__badge post__badge--red">🔴 LIVE</span>
+        </div>
+      </div>
+
+      <!-- 最終問題の解答入力エリア -->
+      <div class="input-zone input-zone--inline" id="input-zone-final">
+        <div class="input-zone__inner">
+          <p class="input-zone__label">🚨 最終回答を入力</p>
+          <div class="input-zone__form" role="form" aria-label="最終回答フォーム">
+            <input
+              type="text"
+              id="final-input"
+              class="input-zone__field"
+              placeholder="犯人の名前を入力…"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+              aria-label="最終回答入力欄"
+            >
+            <button
+              type="button"
+              id="final-submit"
+              class="input-zone__btn input-zone__btn--red"
+              aria-label="最終回答を送信"
+            >
+              解決 ▶
+            </button>
+          </div>
+          <p class="input-zone__error" id="final-error" role="alert" aria-live="assertive" hidden>
+            ❌ 違います。もう一度考えてみてください。
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================================================
+         ⑤ エンディング（finalクリア後にJSで出現）
+         ✏️ 受付案内・スタッフ名・バッジ文言はここで変更
+    ============================================================ -->
+    <div class="ending" id="ending" hidden aria-live="polite">
+      <div class="ending__banner">
+        <span class="ending__banner-icon" aria-hidden="true">🎉</span>
+        <p class="ending__banner-text">事件解決！</p>
+      </div>
+
+      <article class="post post--ending" data-post="ending">
+        <div class="post__avatar post__avatar--ending" aria-hidden="true">🏅</div>
+        <div class="post__body">
+          <div class="post__header">
+            <span class="post__name post__name--gold">実行委員長 あおい</span>
+            <span class="post__handle">@aoi_committee</span>
+            <span class="post__time">✓ SOLVED</span>
+          </div>
+          <!--
+          ✏️ 【編集ガイド】エンディングの文章
+          -->
+          <p class="post__text">
+            🎊 あなたの捜査により、真犯人が特定されました！<br>
+            デマ投稿の犯人は <strong>「松田 輝仁（まつだ てるひと）」</strong>でした。<br>
+            キャンフェスは平和を取り戻しました。本当にありがとう！
+          </p>
+          <div class="post__footer">
+            <span class="post__stat">🔁 9,999</span>
+            <span class="post__stat">❤️ ∞</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 受付誘導 -->
+      <div class="ending__guide" id="ending-guide">
+        <!--
+        ✏️ 【編集ガイド】景品受け取り案内
+           「のり」はスタッフ名です。変更してください。
+        -->
+        <p class="ending__guide-title">🏆 景品ゲット！</p>
+        <p class="ending__guide-body">
+          この画面を<strong>「のり」</strong>の前の受付スタッフに見せて<br>
+          景品を受け取ってください！
+        </p>
+        <!--
+        ✏️ 【編集ガイド】クリア証明バッジ
+           ここに達成バッジや景品の画像を追加できます。
+           例: <img src="badge_clear.png" alt="クリア達成バッジ" class="ending__badge-img">
+        -->
+        <div class="ending__badge" aria-label="クリア達成バッジ">
+          <span class="ending__badge-icon">🔓</span>
+          <p class="ending__badge-label">CASE CLOSED</p>
+          <p class="ending__badge-sub">キャンフェス2026 謎解き完全クリア</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 下部：企画紹介へ戻るボタン -->
+  <div class="back-bar back-bar--bottom">
+    <a href="../mystery-quest/index.html" class="back-bar__link" id="btn-back-bottom">
+      ← 企画紹介ページに戻る
+    </a>
+  </div>
+
+  <footer class="game-footer">
+    <!-- ✏️ フィクションのSNS名・注意書きを変更してください -->
+    <p>マツッター — フィクションのSNSです。このゲームはキャンフェス2026の謎解き企画です。</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
