@@ -21,10 +21,10 @@
   <!-- 共通スタイルシートの読み込み（触らなくてOK） -->
   <link rel="stylesheet" href="css/common.css">
 
-  <style>
-    /* ===================================================
-       このページ（index.html）独自のスタイル
-       =================================================== */
+  <!-- ページ固有スタイルシート（トップページ専用） -->
+  <link rel="stylesheet" href="css/index.css">
+  <!-- 封筒モーダルスタイル（謎解き手紙アイコン＆封筒モーダル） -->
+  <link rel="stylesheet" href="css/letter-modal.css">
 
     /* ---------------------------------------------------
        ヒーローセクション
@@ -516,6 +516,313 @@
       }
     }
 
+    /* ===================================================
+       手紙アイコン（ヘッダー内）
+    =================================================== */
+
+    /* ボタン本体 */
+    .header-letter-icon {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      color: var(--color-text);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  color 0.2s ease;
+      flex-shrink: 0;
+      /* ハンバーガーの直前に来るよう margin-right 0 */
+      margin-right: 2px;
+    }
+
+    .header-letter-icon:hover {
+      transform: translateY(-3px) rotate(-5deg);
+      color: var(--color-accent);
+    }
+
+    .header-letter-icon__svg {
+      width: 22px;
+      height: 22px;
+      display: block;
+    }
+
+    /* 「!」の赤バッジ */
+    .header-letter-icon__badge {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 14px;
+      height: 14px;
+      background-color: #c0392b;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.5rem;
+      font-weight: 700;
+      line-height: 14px;
+      text-align: center;
+      pointer-events: none;
+      /* 点滅アニメーション */
+      animation: letter-badge-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes letter-badge-pulse {
+      0%, 100% { opacity: 1;   transform: scale(1); }
+      50%       { opacity: 0.6; transform: scale(0.85); }
+    }
+
+    /* ===================================================
+       封筒モーダル オーバーレイ
+    =================================================== */
+
+    .letter-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background-color: rgba(30, 22, 14, 0.72);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      /* 初期非表示 */
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    /* 表示時 */
+    .letter-overlay.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ===================================================
+       封筒コンテナ（3Dパースペクティブの親）
+    =================================================== */
+    .letter-envelope {
+      perspective: 900px;
+      width: min(480px, 100%);
+      position: relative;
+    }
+
+    /* ===================================================
+       封筒ボディ（下半分 — 不変の長方形）
+    =================================================== */
+    .letter-envelope__body {
+      position: relative;
+      width: 100%;
+      background: linear-gradient(160deg, #f5ede0 0%, #ede0cc 100%);
+      border-radius: 4px 4px 10px 10px;
+      /* 封筒フタが開いてから手紙が出る高さ分を確保 */
+      min-height: 260px;
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.35),
+        0 4px 16px rgba(0,0,0,0.2);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* 封筒の側面三角装飾（左右の折り目） */
+    .letter-envelope__body::before,
+    .letter-envelope__body::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+    }
+    .letter-envelope__body::before {
+      left: 0;
+      border-width: 0 0 80px 120px;
+      border-color: transparent transparent #d4c4a8 transparent;
+    }
+    .letter-envelope__body::after {
+      right: 0;
+      border-width: 0 120px 80px 0;
+      border-color: transparent #d4c4a8 transparent transparent;
+    }
+
+    /* ===================================================
+       封筒フタ（上フラップ — 3D回転で開く）
+    =================================================== */
+    .letter-envelope__flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      /* フタの高さ（封筒全体の上半分） */
+      height: 50%;
+      /* 変形の基点を下辺（折り目部分）に設定 */
+      transform-origin: bottom center;
+      transform-style: preserve-3d;
+      z-index: 10;
+      /* 初期状態：閉じている（0deg） */
+      transform: rotateX(0deg);
+      transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* フタの三角形（クリップパスで逆三角形） */
+    .letter-envelope__flap-inner {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, #c8b48a 0%, #e2c99a 60%, #dfc090 100%);
+      clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    /* フタが開いた状態（.is-open 付与でJS制御） */
+    .letter-overlay.is-open .letter-envelope__flap {
+      transform: rotateX(-160deg);
+      transition-delay: 0.15s;
+    }
+
+    /* ===================================================
+       手紙カード（封筒から競り出す）
+    =================================================== */
+    .letter-card {
+      position: relative;
+      z-index: 5;
+      width: calc(100% - 32px);
+      background: #faf6f0;
+      border-radius: 4px;
+      padding: 24px 20px 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+      margin: 0 auto;
+      /* 初期状態：封筒の中に隠れている（下に沈んでいる） */
+      transform: translateY(60%);
+      opacity: 0;
+      transition:
+        transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity   0.4s  ease;
+    }
+
+    /* 手紙が競り出た状態 */
+    .letter-overlay.is-open .letter-card {
+      transform: translateY(-30%);
+      opacity: 1;
+      /* フタが開いてから手紙が出る */
+      transition-delay: 0.5s;
+    }
+
+    /* 手紙内の装飾ライン */
+    .letter-card::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 2px;
+      background: #c09060;
+      margin: 0 auto 14px;
+      border-radius: 999px;
+    }
+
+    /* 差出人ラベル */
+    .letter-card__from {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      color: #a08060;
+      text-align: center;
+      margin-bottom: 10px;
+      font-family: 'Georgia', serif;
+    }
+
+    /* 挑戦状タイトル */
+    .letter-card__title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #3c2a14;
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    /* 本文 */
+    .letter-card__body {
+      font-size: 0.82rem;
+      color: #5a4030;
+      line-height: 1.85;
+      text-align: justify;
+      margin-bottom: 18px;
+    }
+
+    /* 捜査開始ボタン */
+    .letter-card__btn {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, #3c2a14, #6a4020);
+      color: #f5ede0;
+      border: none;
+      border-radius: 6px;
+      padding: 13px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: opacity 0.2s ease, transform 0.15s ease;
+    }
+
+    .letter-card__btn:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+      color: #f5ede0;
+    }
+
+    /* 閉じるボタン（右上） */
+    .letter-overlay__close {
+      position: absolute;
+      top: -14px;
+      right: -14px;
+      width: 36px;
+      height: 36px;
+      background: #3c2a14;
+      color: #f5ede0;
+      border: none;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      line-height: 36px;
+      text-align: center;
+      cursor: pointer;
+      z-index: 20;
+      transition: background-color 0.2s ease;
+    }
+
+    .letter-overlay__close:hover {
+      background-color: #c0392b;
+    }
+
+    /* ===================================================
+       スマホ対応
+    =================================================== */
+    @media (max-width: 480px) {
+      .header-letter-icon {
+        width: 36px;
+        height: 36px;
+      }
+
+      .header-letter-icon__svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .letter-overlay.is-open .letter-card {
+        transform: translateY(-20%);
+      }
+
+      .letter-card {
+        padding: 20px 14px 16px;
+      }
+    }
+
     /* ---------------------------------------------------
        キャンパスマップセクション
     --------------------------------------------------- */
@@ -622,6 +929,27 @@
       <div class="site-nav__logo">
         <a href="index.html">Campus Festival</a>
       </div>
+
+      <!-- ========================================================
+           🔍 謎解き手紙アイコン（ハンバーガーの左隣に配置）
+           クリックで封筒モーダルが開きます
+      ======================================================== -->
+      <button
+        class="header-letter-icon"
+        id="header-letter-btn"
+        aria-label="謎解きゲームへの挑戦状を開く"
+        type="button"
+      >
+        <!-- 封筒SVGアイコン -->
+        <svg class="header-letter-icon__svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- 封筒の本体 -->
+          <rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/>
+          <!-- フタの折り目（V字） -->
+          <polyline points="2,5 12,14 22,5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        </svg>
+        <!-- 「！」のバッジ（注目を引く赤点） -->
+        <span class="header-letter-icon__badge" aria-hidden="true">!</span>
+      </button>
 
       <!-- ハンバーガーアイコン（<label> で checkbox と連動）
            クリックするとメニューが開きます -->
@@ -1291,6 +1619,116 @@
         observer.observe(banner, { attributes: true, attributeFilter: ['class'] });
       }
     })();
+  </script>
+
+  <!-- ========================================================
+       🔍 謎解き：封筒モーダル HTML
+       ✏️ 【編集ガイド】挑戦状の文面はここで変更できます。
+  ======================================================== -->
+  <div
+    class="letter-overlay"
+    id="letter-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-label="謎解きゲームへの挑戦状"
+    aria-hidden="true"
+  >
+    <div class="letter-envelope" id="letter-envelope">
+
+      <!-- 閉じるボタン（右上） -->
+      <button
+        class="letter-overlay__close"
+        id="letter-close"
+        aria-label="挑戦状を閉じる"
+        type="button"
+      >&times;</button>
+
+      <!-- 封筒ボディ -->
+      <div class="letter-envelope__body">
+
+        <!-- フタ（3D回転で開く） -->
+        <div class="letter-envelope__flap" aria-hidden="true">
+          <div class="letter-envelope__flap-inner"></div>
+        </div>
+
+        <!-- 手紙カード（競り出てくる） -->
+        <div class="letter-card" role="document">
+
+          <!-- ✏️ 差出人ラベル（変更可） -->
+          <p class="letter-card__from">— FROM: UNKNOWN X —</p>
+
+          <!-- ✏️ 挑戦状タイトル（変更可） -->
+          <h2 class="letter-card__title">
+            🔍 キャンフェスデマ事件<br>
+            捜査員への挑戦状
+          </h2>
+
+          <!-- ✏️ 挑戦状本文（変更可） -->
+          <p class="letter-card__body">
+            キャンフェス2026に関する不審な噂が広まっている。<br>
+            目撃者の証言を読み解き、デマを仕掛けた真犯人を特定せよ。<br>
+            君に解けるかな……？
+          </p>
+
+          <!-- ✏️ 遷移先（変更可） -->
+          <a
+            href="pages/mystery-quest-game/index.html"
+            class="letter-card__btn"
+            id="letter-start-btn"
+          >
+            🔍 捜査を開始する
+          </a>
+        </div>
+      </div>
+    </div>
+  </div><!-- /.letter-overlay -->
+
+  <!-- 封筒モーダル JS -->
+  <script>
+  (function () {
+    'use strict';
+
+    var overlay   = document.getElementById('letter-overlay');
+    var openBtn   = document.getElementById('header-letter-btn');
+    var closeBtn  = document.getElementById('letter-close');
+
+    if (!overlay || !openBtn) return;
+
+    /* --- モーダルを開く --- */
+    function openModal() {
+      overlay.classList.add('is-open');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden'; // スクロール防止
+      // フォーカスを閉じるボタンへ
+      if (closeBtn) setTimeout(function () { closeBtn.focus(); }, 400);
+    }
+
+    /* --- モーダルを閉じる --- */
+    function closeModal() {
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      // フォーカスをアイコンボタンへ戻す
+      openBtn.focus();
+    }
+
+    /* --- イベント設定 --- */
+    openBtn.addEventListener('click', openModal);
+
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+    // オーバーレイ背景クリックで閉じる（封筒枠外）
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) closeModal();
+    });
+
+    // Escape キーで閉じる
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && overlay.classList.contains('is-open')) {
+        closeModal();
+      }
+    });
+  })();
   </script>
 
 </body>
