@@ -4,13 +4,16 @@
  * ヘッダーの手紙アイコン（#header-letter-btn）をクリックすると
  * 封筒モーダル（#letter-overlay）が開閉します。
  *
+ * DOMContentLoaded でラップしているため、JSがHTMLより先に
+ * 読み込まれても正しく動作します。
+ *
  * ✏️ 【編集不要】
  *   挑戦状の文面や遷移先は index.html の #letter-overlay 内を
  *   直接編集してください。
  * ============================================================
  */
 
-(function () {
+document.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
   var overlay  = document.getElementById('letter-overlay');
@@ -60,4 +63,4 @@
       closeModal();
     }
   });
-})();
+});
