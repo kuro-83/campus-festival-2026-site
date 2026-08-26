@@ -16,39 +16,39 @@
    ============================================================ */
 :root {
   /* ─── 背景色 ─── */
-  --bg-base:      #0f1117;   /* ページ全体の背景（深いチャコール） */
-  --bg-card:      #1a1d27;   /* 投稿カードの背景 */
-  --bg-card-alt:  #1e2130;   /* 偶数カードのわずかに異なる背景 */
-  --bg-input:     #12151f;   /* 入力エリアの背景 */
-  --bg-ending:    #0d1f0d;   /* エンディングの深緑背景 */
+  --bg-base:      #F7F4EF;   /* ページ全体の背景（羊皮紙ベージュ） */
+  --bg-card:      #FDFAF6;   /* 投稿カードの背景 */
+  --bg-card-alt:  #F1ECE3;   /* 偶数カードのわずかに異なる背景 */
+  --bg-input:     #FFFFFF;   /* 入力エリアの背景 */
+  --bg-ending:    #F3E9D2;   /* エンディングの淡いゴールド背景 */
 
   /* ─── テキスト色 ─── */
-  --text-primary:  #e8eaf0;  /* メインテキスト */
-  --text-secondary:#8b929e;  /* サブテキスト・ハンドル名 */
-  --text-muted:    #555d6b;  /* 薄い補足テキスト */
-  --text-gold:     #d4a843;  /* ゴールド（エンディング） */
-  --text-red:      #e05252;  /* 赤テキスト（警告・犯人） */
-  --text-green:    #52c977;  /* 緑（成功・解決） */
-  --text-blue:     #4fa8e8;  /* リンク・ハッシュタグ */
-  --text-hint:     #a78bd4;  /* ヒントバッジの紫 */
+  --text-primary:  #4A3B32;  /* メインテキスト */
+  --text-secondary:#8A7060;  /* サブテキスト・ハンドル名 */
+  --text-muted:    #B0A090;  /* 薄い補足テキスト */
+  --text-gold:     #B59469;  /* ゴールド（エンディング） */
+  --text-red:      #A54B42;  /* 赤テキスト（警告・犯人） */
+  --text-green:    #6B8F5E;  /* 緑（成功・解決） */
+  --text-blue:     #9A7A52;  /* リンク・ハッシュタグ */
+  --text-hint:     #8B6F8F;  /* ヒントバッジの紫 */
 
   /* ─── ボーダー色 ─── */
-  --border-base:   rgba(255, 255, 255, 0.07);
-  --border-accent: rgba(79, 168, 232, 0.3);
-  --border-red:    rgba(224, 82, 82, 0.4);
-  --border-gold:   rgba(212, 168, 67, 0.4);
-  --border-green:  rgba(82, 201, 119, 0.4);
+  --border-base:   rgba(74, 59, 50, 0.12);
+  --border-accent: rgba(181, 148, 105, 0.4);
+  --border-red:    rgba(165, 75, 66, 0.35);
+  --border-gold:   rgba(181, 148, 105, 0.4);
+  --border-green:  rgba(107, 143, 94, 0.35);
 
   /* ─── アクセント・ハイライト ─── */
-  --accent-blue:   #4fa8e8;
-  --accent-red:    #e05252;
-  --accent-gold:   #d4a843;
-  --accent-green:  #52c977;
-  --accent-purple: #a78bd4;
+  --accent-blue:   #9A7A52;
+  --accent-red:    #A54B42;
+  --accent-gold:   #B59469;
+  --accent-green:  #6B8F5E;
+  --accent-purple: #8B6F8F;
 
   /* ─── フォント ─── */
-  --font-sans:  'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
-  --font-mono:  'Share Tech Mono', 'Courier New', monospace;
+  --font-sans:  'Noto Serif JP', 'Yu Mincho', '游明朝', Georgia, serif;
+  --font-mono:  'Cormorant Garamond', 'Noto Serif JP', serif;
 
   /* ─── サイズ ─── */
   --header-height: 56px;
@@ -77,10 +77,10 @@ html {
 body {
   font-family: var(--font-sans);
   background-color: var(--bg-base);
-  /* 暗い星空のような微細グラデーション */
+  /* ゴールド系の淡いグラデーション */
   background-image:
-    radial-gradient(ellipse at 20% 10%, rgba(79, 168, 232, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 90%, rgba(167, 139, 212, 0.04) 0%, transparent 50%);
+    radial-gradient(ellipse at 20% 10%, rgba(181, 148, 105, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 90%, rgba(181, 148, 105, 0.05) 0%, transparent 50%);
   color: var(--text-primary);
   line-height: 1.7;
   padding-top: var(--header-height);
@@ -113,7 +113,7 @@ img {
   right: 0;
   z-index: 100;
   height: var(--header-height);
-  background-color: rgba(15, 17, 23, 0.92);
+  background-color: rgba(247, 244, 239, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-base);
@@ -279,12 +279,12 @@ img {
 }
 
 .post:hover {
-  background-color: rgba(255, 255, 255, 0.015);
+  background-color: rgba(74, 59, 50, 0.03);
 }
 
 /* 犯人ポスト（赤みのある背景） */
 .post--suspect {
-  background-color: rgba(224, 82, 82, 0.04);
+  background-color: rgba(165, 75, 66, 0.04);
   border-left: 2px solid var(--accent-red);
 }
 
@@ -295,7 +295,7 @@ img {
 
 /* 最終問題ポスト */
 .post--final {
-  background-color: rgba(224, 82, 82, 0.06);
+  background-color: rgba(165, 75, 66, 0.06);
   border: 1px solid var(--border-red);
   border-radius: var(--radius-md);
   margin: 12px 16px;
@@ -312,7 +312,7 @@ img {
 
 /* エンディングポスト */
 .post--ending {
-  background-color: rgba(82, 201, 119, 0.05);
+  background-color: rgba(107, 143, 94, 0.05);
   border-left: 2px solid var(--accent-green);
 }
 
@@ -341,18 +341,18 @@ img {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(74, 59, 50, 0.05);
   border: 1px solid var(--border-base);
   flex-shrink: 0;
 }
 
 .post__avatar--suspect {
-  background-color: rgba(224, 82, 82, 0.12);
+  background-color: rgba(165, 75, 66, 0.12);
   border-color: var(--border-red);
 }
 
 .post__avatar--ending {
-  background-color: rgba(82, 201, 119, 0.12);
+  background-color: rgba(107, 143, 94, 0.12);
   border-color: var(--border-green);
 }
 
@@ -403,8 +403,8 @@ img {
 }
 
 .post__text strong {
-  color: #fff;
-  background-color: rgba(167, 139, 212, 0.15);
+  color: var(--text-primary);
+  background-color: rgba(139, 111, 143, 0.15);
   border-radius: 3px;
   padding: 0 4px;
 }
@@ -440,13 +440,13 @@ img {
 }
 
 .post__badge--warning {
-  background-color: rgba(224, 82, 82, 0.15);
+  background-color: rgba(165, 75, 66, 0.15);
   color: var(--text-red);
   border: 1px solid var(--border-red);
 }
 
 .post__badge--red {
-  background-color: rgba(224, 82, 82, 0.2);
+  background-color: rgba(165, 75, 66, 0.2);
   color: var(--text-red);
   border: 1px solid var(--border-red);
   animation: blink-label 1s ease-in-out infinite;
@@ -459,9 +459,9 @@ img {
   letter-spacing: 0.1em;
   padding: 2px 8px;
   border-radius: 999px;
-  background-color: rgba(167, 139, 212, 0.12);
+  background-color: rgba(139, 111, 143, 0.12);
   color: var(--text-hint);
-  border: 1px solid rgba(167, 139, 212, 0.3);
+  border: 1px solid rgba(139, 111, 143, 0.3);
 }
 
 /* 最終問題テキスト */
@@ -469,7 +469,7 @@ img {
   display: block;
   margin-top: 10px;
   padding: 12px 14px;
-  background-color: rgba(224, 82, 82, 0.08);
+  background-color: rgba(165, 75, 66, 0.08);
   border: 1px solid var(--border-red);
   border-radius: var(--radius-sm);
   font-size: 0.92rem;
@@ -556,8 +556,8 @@ img {
 .input-zone__field {
   flex: 1;
   min-width: 0;
-  background-color: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(74, 59, 50, 0.03);
+  border: 1px solid rgba(74, 59, 50, 0.15);
   border-radius: var(--radius-sm);
   padding: 10px 14px;
   font-family: var(--font-mono);
@@ -573,7 +573,7 @@ img {
 
 .input-zone__field:focus {
   border-color: var(--accent-blue);
-  background-color: rgba(79, 168, 232, 0.04);
+  background-color: rgba(154, 122, 82, 0.05);
 }
 
 .input-zone__btn {
@@ -593,7 +593,7 @@ img {
 }
 
 .input-zone__btn:hover {
-  background-color: #3d8fd0;
+  background-color: #836846;
   transform: translateY(-1px);
 }
 
@@ -606,7 +606,7 @@ img {
 }
 
 .input-zone__btn--red:hover {
-  background-color: #c43e3e;
+  background-color: #8c4038;
 }
 
 .input-zone__error {
@@ -626,7 +626,7 @@ img {
 /* 正解時のフィールドハイライト */
 .input-zone__field.is-correct {
   border-color: var(--accent-green);
-  background-color: rgba(82, 201, 119, 0.04);
+  background-color: rgba(107, 143, 94, 0.04);
   color: var(--text-green);
   pointer-events: none;
 }
@@ -647,16 +647,16 @@ img {
   gap: 12px;
   padding: 24px 16px;
   background: linear-gradient(135deg,
-    rgba(82, 201, 119, 0.08) 0%,
-    rgba(212, 168, 67, 0.08) 100%);
+    rgba(107, 143, 94, 0.08) 0%,
+    rgba(181, 148, 105, 0.08) 100%);
   border-top: 1px solid var(--border-green);
   border-bottom: 1px solid var(--border-green);
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: inset 0 0 20px rgba(82, 201, 119, 0.04); }
-  50%       { box-shadow: inset 0 0 40px rgba(82, 201, 119, 0.1); }
+  0%, 100% { box-shadow: inset 0 0 20px rgba(107, 143, 94, 0.04); }
+  50%       { box-shadow: inset 0 0 40px rgba(107, 143, 94, 0.1); }
 }
 
 .ending__banner-icon {
@@ -675,7 +675,7 @@ img {
 .ending__guide {
   margin: 16px 16px 24px;
   padding: 24px 20px;
-  background-color: rgba(212, 168, 67, 0.06);
+  background-color: rgba(181, 148, 105, 0.06);
   border: 1.5px solid var(--border-gold);
   border-radius: var(--radius-md);
   text-align: center;
@@ -709,7 +709,7 @@ img {
   align-items: center;
   gap: 6px;
   padding: 20px 28px;
-  background-color: rgba(82, 201, 119, 0.06);
+  background-color: rgba(107, 143, 94, 0.06);
   border: 2px solid var(--border-green);
   border-radius: var(--radius-lg);
   /* ✏️ 画像がある場合はここのスタイルを調整してください */
@@ -745,7 +745,7 @@ img {
    10. フッター
    ============================================================ */
 .game-footer {
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: rgba(74, 59, 50, 0.03);
   border-top: 1px solid var(--border-base);
   text-align: center;
   padding: 16px;
