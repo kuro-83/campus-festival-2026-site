@@ -119,6 +119,27 @@
   font-weight: 600;
 }
 
+/* 企画紹介キャッチコピー（勢い重視） */
+.page-hero__catch {
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 3.6vw, 1.15rem);
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+  color: var(--kuji-gold-pale);
+  margin-bottom: var(--space-sm);
+}
+
+/* 世界観リード文 */
+.page-hero__lead {
+  max-width: 34em;
+  margin: var(--space-xs) auto 0;
+  font-size: 0.9rem;
+  line-height: 1.9;
+  letter-spacing: 0.03em;
+  color: rgba(247, 244, 239, 0.72);
+}
+
 /* 日時・場所情報枠 */
 .page-hero__info {
   display: inline-block;
