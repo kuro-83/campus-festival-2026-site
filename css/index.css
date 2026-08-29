@@ -276,16 +276,21 @@
   z-index: 999;
   display: flex;
   align-items: stretch;
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
 }
 
-.floating-kuji-banner.is-hidden {
-  transform: translateY(-50%) translateX(calc(100% + 2px));
+/* カード部分だけがスライドアウト／フェードする（親とタブは画面内に留まる） */
+.floating-kuji-banner.is-hidden .floating-kuji-banner__card {
+  transform: translateX(calc(100% + 2px));
   opacity: 0;
   pointer-events: none;
 }
 
 .floating-kuji-banner__tab {
+  /* 親コンテナ（right:0）の右端に固定し、カードの表示状態に関わらず常に画面端に残す */
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -326,7 +331,9 @@
   color: var(--color-text);
   position: relative;
   overflow: hidden;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease,
+              transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.35s ease;
 }
 
 .floating-kuji-banner__card:hover {
@@ -412,8 +419,8 @@
     z-index: 999;
   }
 
-  .floating-kuji-banner.is-hidden {
-    transform: translateY(-50%) translateX(calc(100% + 2px));
+  .floating-kuji-banner.is-hidden .floating-kuji-banner__card {
+    transform: translateX(calc(100% + 2px));
     opacity: 0;
     pointer-events: none;
   }

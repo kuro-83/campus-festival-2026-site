@@ -26,3 +26,33 @@
 
   observer.observe(banner, { attributes: true, attributeFilter: ['class'] });
 })();
+
+/**
+ * ============================================================
+ * 初回表示制御
+ * ------------------------------------------------------------
+ * ページ読み込み直後はバナーを非表示（HTML 側で is-hidden 付与）にしておき、
+ * 「企画一覧」セクション（#projects）が最初に画面内へ入ったタイミングで
+ * is-hidden を外してスライドインさせる。一度表示したら監視を解除し、
+ * 以降は自動で隠さない（×閉じる／タブ再開の既存挙動には干渉しない）。
+ * ============================================================
+ */
+(function () {
+  'use strict';
+
+  var banner = document.getElementById('floating-kuji-banner');
+  var projectsSection = document.getElementById('projects');
+
+  if (!banner || !projectsSection) return;
+
+  var revealObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        banner.classList.remove('is-hidden');
+        revealObserver.disconnect();
+      }
+    });
+  }, { threshold: 0 });
+
+  revealObserver.observe(projectsSection);
+})();
