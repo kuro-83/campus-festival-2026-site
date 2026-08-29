@@ -59,15 +59,11 @@
       <div class="site-nav__right">
 
         <!-- 🔍 封筒アイコン -->
-        <button
-          class="header-letter-icon"
-          id="header-letter-btn"
-          aria-label="謎解きゲームへの挑戦状を開く"
-          type="button"
-        >
-          <svg class="header-letter-icon__svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/>
-            <polyline points="2,5 12,14 22,5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        <button class="header-letter-icon" id="header-letter-btn" aria-label="謎解きゲームへの挑戦状を開く" type="button">
+          <svg class="header-letter-icon__svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true">
+            <rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.6" />
+            <polyline points="2,5 12,14 22,5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
           </svg>
           <span class="header-letter-icon__badge" aria-hidden="true">!</span>
         </button>
@@ -317,25 +313,17 @@
   <div class="floating-kuji-banner" id="floating-kuji-banner" aria-label="一番くじ追従バナー" role="complementary">
 
     <!-- 左側の「開く」タブ（非表示中にクリックすると再表示） -->
-    <button class="floating-kuji-banner__tab"
-            id="floating-kuji-open-tab"
-            aria-label="一番くじバナーを開く"
-            style="display:none;"
-            onclick="document.getElementById('floating-kuji-banner').classList.remove('is-hidden'); this.style.display='none';">
+    <button class="floating-kuji-banner__tab" id="floating-kuji-open-tab" aria-label="一番くじバナーを開く" style="display:none;"
+      onclick="document.getElementById('floating-kuji-banner').classList.remove('is-hidden'); this.style.display='none';">
       🎟 くじ
     </button>
 
     <!-- カード本体（リンクと閉じるボタン） -->
-    <a href="pages/ichiban-kuji/index.html"
-       class="floating-kuji-banner__card"
-       id="floating-kuji-card"
-       aria-label="一番くじ特設ページへ">
+    <a href="pages/ichiban-kuji/index.html" class="floating-kuji-banner__card" id="floating-kuji-card"
+      aria-label="一番くじ特設ページへ">
 
       <!-- 閉じるボタン -->
-      <button class="floating-kuji-banner__close"
-              id="floating-kuji-close"
-              aria-label="バナーを閉じる"
-              onclick="event.preventDefault(); event.stopPropagation();
+      <button class="floating-kuji-banner__close" id="floating-kuji-close" aria-label="バナーを閉じる" onclick="event.preventDefault(); event.stopPropagation();
                        document.getElementById('floating-kuji-banner').classList.add('is-hidden');
                        var tab = document.getElementById('floating-kuji-open-tab');
                        if(tab) tab.style.display='flex';">
@@ -558,7 +546,8 @@
         </div>
 
         <!-- ============ 一番くじ ============ -->
-        <a href="pages/ichiban-kuji/index.html" class="project-card" id="card-lottery" style="border-color: rgba(201,146,42,0.45);">
+        <a href="pages/ichiban-kuji/index.html" class="project-card" id="card-lottery"
+          style="border-color: rgba(201,146,42,0.45);">
           <div class="project-card__bar" style="background: linear-gradient(90deg, #9B6F1A, #C9922A, #E8BF6A);"></div>
           <div class="project-card__body">
             <p class="project-card__tag" style="color: #C9922A;">🎟 Lottery</p>
@@ -736,23 +725,12 @@
        🔍 謎解き：封筒モーダル HTML
        ✏️ 【編集ガイド】挑戦状の文面はここで変更できます。
   ======================================================== -->
-  <div
-    class="letter-overlay"
-    id="letter-overlay"
-    role="dialog"
-    aria-modal="true"
-    aria-label="謎解きゲームへの挑戦状"
-    aria-hidden="true"
-  >
+  <div class="letter-overlay" id="letter-overlay" role="dialog" aria-modal="true" aria-label="謎解きゲームへの挑戦状"
+    aria-hidden="true">
     <div class="letter-envelope" id="letter-envelope">
 
       <!-- 閉じるボタン（右上） -->
-      <button
-        class="letter-overlay__close"
-        id="letter-close"
-        aria-label="挑戦状を閉じる"
-        type="button"
-      >&times;</button>
+      <button class="letter-overlay__close" id="letter-close" aria-label="挑戦状を閉じる" type="button">&times;</button>
 
       <!-- 封筒ボディ -->
       <div class="letter-envelope__body">
@@ -782,11 +760,7 @@
           </p>
 
           <!-- ✏️ 遷移先（変更可） -->
-          <a
-            href="pages/mystery-quest-game/index.html"
-            class="letter-card__btn"
-            id="letter-start-btn"
-          >
+          <a href="pages/mystery-quest-game/index.html" class="letter-card__btn" id="letter-start-btn">
             🔍 捜査を開始する
           </a>
         </div>
