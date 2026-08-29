@@ -119,62 +119,22 @@
   font-weight: 600;
 }
 
-/* 企画紹介キャッチコピー（勢い重視） */
-.page-hero__catch {
-  font-family: var(--font-display);
-  font-size: clamp(0.95rem, 3.6vw, 1.15rem);
-  font-weight: 600;
-  line-height: 1.6;
-  letter-spacing: 0.04em;
-  color: var(--kuji-gold-pale);
-  margin-bottom: var(--space-sm);
-}
-
-/* 世界観リード文 */
-.page-hero__lead {
-  max-width: 34em;
-  margin: var(--space-xs) auto 0;
-  font-size: 0.9rem;
-  line-height: 1.9;
-  letter-spacing: 0.03em;
-  color: rgba(247, 244, 239, 0.72);
-}
-
-/* 日時・場所情報枠 */
-.page-hero__info {
-  display: inline-block;
-  border: 1px solid rgba(181, 148, 105, 0.3);
-  border-radius: var(--radius-sm);
-  padding: 14px 24px;
-  margin-top: var(--space-sm);
-  background: rgba(181, 148, 105, 0.08);
-  text-align: left;
-}
-
-.page-hero__info-row {
+/* 開催場所（cafe ページと同じ「◆」区切りの1行表示） */
+.page-hero__place {
+  font-size: 0.82rem;
+  color: rgba(247, 244, 239, 0.6);
+  letter-spacing: 0.12em;
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 0.87rem;
-  color: rgba(247, 244, 239, 0.75);
-  letter-spacing: 0.05em;
+  justify-content: center;
+  gap: 6px;
 }
 
-.page-hero__info-row + .page-hero__info-row {
-  margin-top: 8px;
-}
-
-.page-hero__info-icon {
-  font-size: 1rem;
-  flex-shrink: 0;
-}
-
-.page-hero__info-label {
-  color: var(--kuji-gold-pale);
-  font-size: 0.72rem;
-  letter-spacing: 0.15em;
-  font-family: var(--font-display);
-  min-width: 56px;
+.page-hero__place::before,
+.page-hero__place::after {
+  content: '◆';
+  font-size: 0.5rem;
+  color: var(--kuji-gold);
 }
 
 /* ============================================================
@@ -203,6 +163,19 @@
   background-color: var(--kuji-gold);
   border-radius: 2px;
   flex-shrink: 0;
+}
+
+/* ============================================================
+   4-2. 企画概要・紹介文（cafe/style.css の同クラス踏襲）
+   ============================================================ */
+.about-section {
+  background-color: var(--kuji-section-bg);
+}
+
+.about-text {
+  font-size: 0.92rem;
+  line-height: 2;
+  color: var(--kuji-text);
 }
 
 /* ============================================================
