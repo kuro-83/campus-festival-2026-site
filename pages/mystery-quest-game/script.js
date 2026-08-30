@@ -37,6 +37,21 @@ const STAGE_ANSWER = 'matsuda';   // ← ✏️ ここを実際の正解に変�
 const FINAL_ANSWER = 'clear';     // ← ✏️ ここを実際の正解に変更してください
 
 /* ===========================================================
+   ①-2 スプレッドシート連携の設定
+   ===========================================================
+   ✏️ 【編集ガイド】
+      タイムラインの雑談投稿（種別=timeline）とヒント投稿（種別=hint）は
+      下記の公開CSV（Googleスプレッドシート「ウェブに公開」）から読み込みます。
+      投稿の追加・修正はスプレッドシートを編集するだけでOKです。
+
+      取得に失敗した場合は localStorage のキャッシュ →
+      それも無ければ DEFAULT_CSV（このファイル下部）で表示します。
+   =========================================================== */
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRZzNupAWWUdRaj9qbRV0CuHwReAd4p1fhb0ckmZf4M_GicQQnfW-YfCaKo_6p5SBBkvcvCESz8uqcU/pub?gid=1238210212&single=true&output=csv';
+const FETCH_TIMEOUT_MS = 6000;
+const CACHE_KEY = 'matsutter_posts_csv_v1';
+
+/* ===========================================================
    ② ゲーム状態管理
    =========================================================== */
 const state = {
@@ -250,7 +265,212 @@ function bindInputActions(inputId, submitId, onSubmit) {
 }
 
 /* ===========================================================
-   ⑦ 下部タブバー：3ビューの切り替え
+   ⑦ スプレッドシート連携：投稿データの取得・パース・描画
+   =========================================================== */
+
+/* --- アイコン対応表（インラインSVG / stroke="currentColor"） ---
+   このページで既に使われているアバターSVGを流用（circle-help のみ Lucide から新規取得）。
+   CSV の「アイコン」列がこのどれにも一致しない場合は user にフォールバックする。 */
+const ICON_SVG_HEAD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
+const ICONS = {
+  'graduation-cap': ICON_SVG_HEAD + '<path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>',
+  'search': ICON_SVG_HEAD + '<path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>',
+  'fingerprint': ICON_SVG_HEAD + '<path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"/><path d="M14 13.12c0 2.38 0 6.38-1 8.88"/><path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"/><path d="M2 12a10 10 0 0 1 18-6"/><path d="M2 16h.01"/><path d="M21.8 16c.2-2 .131-5.354 0-6"/><path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"/><path d="M8.65 22c.21-.66.45-1.32.57-2"/><path d="M9 6.8a6 6 0 0 1 9 5.2v2"/></svg>',
+  'camera': ICON_SVG_HEAD + '<path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg>',
+  'laptop': ICON_SVG_HEAD + '<path d="M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z"/><path d="M20.054 15.987H3.946"/></svg>',
+  'megaphone': ICON_SVG_HEAD + '<path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/><path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14"/><path d="M8 6v8"/></svg>',
+  // ももこ（雑談）で使われているSVGそのまま
+  'smile': ICON_SVG_HEAD + '<path d="M15 10V9"/><path d="M9 10V9"/><path d="M9 16a5 5 0 0 1 6 0"/><circle cx="12" cy="12" r="10"/></svg>',
+  // だいすけ先輩（雑談）で使われているSVGそのまま
+  'user': ICON_SVG_HEAD + '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+  // Lucide circle-help（新規取得・ISCライセンス）
+  'circle-help': ICON_SVG_HEAD + '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>',
+};
+
+/** アイコン名 → SVG文字列（未知の名前は user にフォールバック） */
+function iconSvg(name) {
+  return ICONS[name] || ICONS.user;
+}
+
+/** ヒント番号 → 丸数字（1〜9のみ。範囲外はそのままの数字を返す） */
+const HINT_CIRCLED = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨'];
+
+/**
+ * HTMLに差し込む前に危険な文字を実体参照へ。innerHTMLに生の文字列を入れないこと。
+ * @param {string} str
+ * @returns {string}
+ */
+function escapeHtml(str) {
+  return String(str == null ? '' : str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/**
+ * 簡易 RFC4180 CSVパーサー（引用符・カンマ/改行を含むセル・BOM付きに対応）
+ * @param {string} text
+ * @returns {string[][]}
+ */
+function parseCSV(text) {
+  if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1); // BOM除去
+  const rows = [];
+  let row = [];
+  let field = '';
+  let inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (text[i + 1] === '"') { field += '"'; i++; }
+        else { inQuotes = false; }
+      } else {
+        field += c;
+      }
+    } else {
+      if (c === '"') {
+        inQuotes = true;
+      } else if (c === ',') {
+        row.push(field); field = '';
+      } else if (c === '\r') {
+        // 何もしない（\nで改行処理）
+      } else if (c === '\n') {
+        row.push(field); field = '';
+        rows.push(row); row = [];
+      } else {
+        field += c;
+      }
+    }
+  }
+  if (field.length > 0 || row.length > 0) {
+    row.push(field);
+    rows.push(row);
+  }
+  return rows.filter((r) => !(r.length === 1 && r[0] === ''));
+}
+
+/** CSVの行配列を、ヘッダー行をキーにしたオブジェクトの配列に変換する */
+function csvToObjects(csvText) {
+  const rows = parseCSV(csvText);
+  if (rows.length < 2) return [];
+  const headers = rows[0];
+  return rows.slice(1).map((row) => {
+    const obj = {};
+    headers.forEach((h, i) => { obj[h] = (row[i] || '').trim(); });
+    return obj;
+  });
+}
+
+/**
+ * 投稿データCSVを取得する（fetch → localStorageキャッシュ → DEFAULT_CSV の3段構え）
+ * @returns {Promise<string>}
+ */
+async function fetchPostsCSV() {
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+    const url = SHEET_CSV_URL + '&_=' + Date.now(); // キャッシュバスター
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(timer);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    try { localStorage.setItem(CACHE_KEY, text); } catch (e) { /* 無視 */ }
+    return text;
+  } catch (e) {
+    console.warn('[マツッター] スプレッドシート取得失敗。キャッシュ/デフォルトを使用します。', e);
+    try {
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) return cached;
+    } catch (e2) { /* 無視 */ }
+    return DEFAULT_CSV;
+  }
+}
+
+/** 「表示順」で昇順ソートしたコピーを返す */
+function sortByOrder(list) {
+  return list.slice().sort((a, b) =>
+    (parseFloat(a['表示順']) || 0) - (parseFloat(b['表示順']) || 0)
+  );
+}
+
+/** ハッシュタグ文字列（スペース区切り）→ <span class="post__hashtag"> の連結 */
+function hashtagSpans(raw) {
+  const tags = String(raw || '').trim().split(/\s+/).filter(Boolean);
+  return tags.map((t) => ' <span class="post__hashtag">' + escapeHtml(t) + '</span>').join('');
+}
+
+/** 1投稿ぶんの共通パーツ（ヘッダー行 + 本文） */
+function postBodyInner(obj) {
+  return (
+    '<div class="post__header">' +
+      '<span class="post__name">' + escapeHtml(obj['名前']) + '</span>' +
+      '<span class="post__handle">' + escapeHtml(obj['ID']) + '</span>' +
+      '<span class="post__time">' + escapeHtml(obj['時刻']) + '</span>' +
+    '</div>' +
+    '<p class="post__text">' + escapeHtml(obj['本文']) + hashtagSpans(obj['ハッシュタグ']) + '</p>'
+  );
+}
+
+/** フッター行（リツイート数・いいね数 + 任意の追加バッジ） */
+function postFooter(obj, extraBadgeHtml) {
+  return (
+    '<div class="post__footer">' +
+      '<span class="post__stat">🔁 ' + escapeHtml(obj['リツイート数']) + '</span>' +
+      '<span class="post__stat">❤️ ' + escapeHtml(obj['いいね数']) + '</span>' +
+      (extraBadgeHtml || '') +
+    '</div>'
+  );
+}
+
+/** 雑談投稿（種別=timeline）を #ambient-posts-slot に描画する */
+function renderAmbientPosts(rows) {
+  const slot = document.getElementById('ambient-posts-slot');
+  if (!slot) return;
+  slot.innerHTML = sortByOrder(rows).map((obj) =>
+    '<article class="post post--witness" data-post="ambient">' +
+      '<div class="post__avatar" aria-hidden="true">' + iconSvg(obj['アイコン']) + '</div>' +
+      '<div class="post__body">' + postBodyInner(obj) + postFooter(obj) + '</div>' +
+    '</article>'
+  ).join('');
+}
+
+/** ヒント投稿（種別=hint）を #hint-pool に描画する */
+function renderHintPosts(rows) {
+  const pool = document.getElementById('hint-pool');
+  if (!pool) return;
+  pool.innerHTML = sortByOrder(rows).map((obj) => {
+    const num = obj['ヒント番号'] || '';
+    const n = parseInt(num, 10);
+    const mark = (n >= 1 && n <= 9) ? HINT_CIRCLED[n - 1] : escapeHtml(num);
+    const badge = '<span class="post__hint-badge">🔎 ヒント' + mark + '</span>';
+    return (
+      '<article class="post post--witness" data-post="hint" data-hint="' + escapeHtml(num) + '">' +
+        '<div class="post__avatar" aria-hidden="true">' + iconSvg(obj['アイコン']) + '</div>' +
+        '<div class="post__body">' + postBodyInner(obj) + postFooter(obj, badge) + '</div>' +
+      '</article>'
+    );
+  }).join('');
+}
+
+/** ヒント投稿に出てくるハッシュタグから検索チップ（#search-chips）を生成する */
+function renderSearchChips() {
+  const container = document.getElementById('search-chips');
+  const pool = document.getElementById('hint-pool');
+  if (!container || !pool) return;
+  const seen = new Set();
+  const tags = [];
+  pool.querySelectorAll('.post__hashtag').forEach((el) => {
+    const t = el.textContent.trim();
+    if (t && !seen.has(t)) { seen.add(t); tags.push(t); }
+  });
+  container.innerHTML = tags.map((t) =>
+    '<button type="button" class="search-chip" data-query="' + escapeHtml(t) + '">' + escapeHtml(t) + '</button>'
+  ).join('');
+}
+
+/* ===========================================================
+   ⑧ 下部タブバー：3ビューの切り替え
    =========================================================== */
 
 /** タブバーを初期化する（初期表示はタイムライン） */
@@ -283,7 +503,7 @@ function initTabBar() {
 }
 
 /* ===========================================================
-   ⑧ 検索ビュー：ヒント投稿のリアルタイム絞り込み
+   ⑨ 検索ビュー：ヒント投稿のリアルタイム絞り込み
    =========================================================== */
 
 /** 検索ビューを初期化する */
@@ -335,15 +555,14 @@ function initSearch() {
 }
 
 /* ===========================================================
-   ⑨ 初期化（DOMContentLoaded）
+   ⑩ 初期化（DOMContentLoaded）
    =========================================================== */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
   initTabBar();
-  initSearch();
 
-
-  /* --- Stage 1 --- */
+  /* --- 入力フォームのバインド ---
+     ゲーム核心の入力欄はスプレッドシート取得を待たずに先に有効化する。 */
   bindInputActions('stage1-input', 'stage1-submit', () => {
     if (state.stage1Cleared) return; // 二重送信防止
 
@@ -357,7 +576,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  /* --- Final --- */
   bindInputActions('final-input', 'final-submit', () => {
     if (state.finalCleared) return; // 二重送信防止
 
@@ -371,6 +589,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  /* --- スプレッドシートから投稿を取得して描画 ---
+     initSearch() は #hint-pool の中身と .search-chip の存在を前提にしているため、
+     描画（renderHintPosts / renderSearchChips）が終わってから呼ぶ。 */
+  const csvText = await fetchPostsCSV();
+  const posts = csvToObjects(csvText);
+  renderAmbientPosts(posts.filter((p) => p['種別'] === 'timeline'));
+  renderHintPosts(posts.filter((p) => p['種別'] === 'hint'));
+  renderSearchChips();
+
+  initSearch();
+
   /*
   ✏️ 【開発用デバッグ】
      ブラウザのコンソールで以下を実行すると各ステージをスキップできます。
@@ -378,3 +607,24 @@ document.addEventListener('DOMContentLoaded', () => {
        handleFinalSuccess();   // finalをクリア
   */
 });
+
+/* ===========================================================
+   ⑪ オフライン用フォールバックデータ（DEFAULT_CSV）
+   ===========================================================
+   スプレッドシートも localStorage キャッシュも使えない場合に
+   これで表示する。列構成・内容は公開スプレッドシート／従来の
+   HTML直書きと一致させること（デグレ防止）。
+   ※ 本文は書式なしのプレーンテキスト（<strong> 等の装飾は入らない）。
+   =========================================================== */
+const DEFAULT_CSV = `種別,表示順,名前,ID,アイコン,時刻,本文,ハッシュタグ,リツイート数,いいね数,ヒント番号
+timeline,1,ももこ,@momo_camp26,smile,09:14,うそやばい、まじで中止なの!? 出店の準備めっちゃしたのに…😭 誰か本当か教えて,#キャンフェス2026,46,73,
+timeline,2,りく（3年A組）,@riku_3a,user,09:22,え待って中止の話拡散されすぎてて草。てかソースどこ？公式そんなアナウンス出してなくない？,,88,154,
+timeline,3,だいすけ先輩,@daisuke_senpai,user,09:40,後輩から中止って聞いて焦って先生に聞きに行ったら『そんな話聞いてない』って言われた。これデマだ,,205,367,
+timeline,4,匿名希望,@anon_student2026,user,09:58,なんか変な投稿からめっちゃ広まってるらしい。RTする前に一回確認した方がいいと思うよ〜,,132,219,
+hint,1,たろちゃん,@taro_campfes,graduation-cap,09:18,え、中止？！さっき正門で「M」と書かれたステッカーが貼られた看板を見たけど… あれが怪しいのかな。,#キャンフェスデマ事件,23,87,1
+hint,2,花子 探偵,@hanako_detective,search,09:31,不審な投稿のIPログを辿ったら…発信場所は「A棟 3階」の端末から。 あの場所には誰がいたんだろう。,#調査中,61,112,2
+hint,3,松田 捜査官,@matsuda_detective,fingerprint,09:45,目撃情報：投稿直前、黒いパーカーの人物が図書館前のベンチに座ってスマホを操作していた。 手元には「5」と書かれたメモが…,#目撃者募集,89,204,3
+hint,4,写真部 ゆい,@yui_photo_club,camera,10:02,写真整理してたら偶然写ってた！9時10分ごろ、A棟3階の窓から外を覗いてる人物。 名札に「T・S」って書いてあるっぽい…？,#証拠写真,310,521,4
+hint,5,情報部 けんた,@kenta_itclub,laptop,10:15,アカウント @unknown_x_2026 を解析したら プロフィール画像のメタデータに「Matsuda_2026」という文字列が残ってた。 これ、本名じゃないか？,#デジタル捜査,178,399,5
+hint,6,実行委員長 あおい,@aoi_committee,megaphone,10:29,みなさん、落ち着いてください。キャンフェスは予定通り開催です！ デマを流した人物の特定を進めています。 心当たりのある方はDMを。,#キャンフェス開催,892,1.2K,6
+`;
