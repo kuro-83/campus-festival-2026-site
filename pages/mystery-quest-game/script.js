@@ -138,6 +138,8 @@ function handleStage1Success() {
   const submitEl  = document.getElementById('stage1-submit');
   const errorEl   = document.getElementById('stage1-error');
   const finalPost = document.getElementById('final-post');
+  const dmMsg2    = document.getElementById('dm-msg-2');
+  const finalZone = document.getElementById('input-zone-final');
 
   // 入力欄をクリア状態に
   if (inputEl)  inputEl.classList.add('is-correct');
@@ -145,26 +147,16 @@ function handleStage1Success() {
   // エラーを必ず非表示（直前まで表示されていた場合も含む）
   if (errorEl) { errorEl.hidden = true; errorEl.style.animation = 'none'; }
 
-  // 「鍵解除」演出メッセージをinput-zone内に追加
-  const zone = document.getElementById('input-zone-stage1');
-  if (zone) {
-    const msg = document.createElement('p');
-    msg.style.cssText = [
-      'margin-top:12px',
-      'font-family:var(--font-mono)',
-      'font-size:0.82rem',
-      'color:var(--text-green)',
-      'animation:slide-in-post 0.4s ease both',
-    ].join(';');
-    // ✏️ 鍵解除演出のメッセージ（変更可）
-    msg.textContent = '🔓 捜査コード認証完了 — 暗号化された最終通信を受信しました…';
-    zone.querySelector('.input-zone__inner').appendChild(msg);
-  }
+  // タイムライン側：犯人の挑発投稿（メッセージのみ）を表示
+  // ※ DMタブを見ている場合もあるので、強制的なタブ切り替え・スクロールはしない
+  if (finalPost) revealElement(finalPost);
 
-  // 最終問題ポストを表示
-  if (finalPost) {
-    revealElement(finalPost);
-    scrollToElement(finalPost);
+  // DM側：2通目メッセージ（旧「🔓 捜査コード認証完了…」の置き換え）と
+  //        最終回答入力フォームを表示
+  if (dmMsg2)    revealElement(dmMsg2);
+  if (finalZone) {
+    revealElement(finalZone);
+    scrollToElement(finalZone);
   }
 }
 
@@ -198,17 +190,21 @@ function handleFinalSuccess() {
   const inputEl  = document.getElementById('final-input');
   const submitEl = document.getElementById('final-submit');
   const errorEl  = document.getElementById('final-error');
-  const ending   = document.getElementById('ending');
+  const dmMsg3   = document.getElementById('dm-msg-3');
+  const followup = document.getElementById('post-reveal-followup');
 
   if (inputEl)  inputEl.classList.add('is-correct');
   if (submitEl) submitEl.disabled = true;
   if (errorEl)  errorEl.hidden = true;
 
-  // エンディングを表示
-  if (ending) {
-    revealElement(ending);
-    scrollToElement(ending);
+  // DM側：3通目メッセージ（旧エンディングを統合・景品受け取り案内を含む）を表示
+  if (dmMsg3) {
+    revealElement(dmMsg3);
+    scrollToElement(dmMsg3);
   }
+
+  // タイムライン側：事件解決後の続報投稿（ももこ）を表示
+  if (followup) revealElement(followup);
 }
 
 /**
@@ -254,9 +250,98 @@ function bindInputActions(inputId, submitId, onSubmit) {
 }
 
 /* ===========================================================
-   ⑦ 初期化（DOMContentLoaded）
+   ⑦ 下部タブバー：3ビューの切り替え
+   =========================================================== */
+
+/** タブバーを初期化する（初期表示はタイムライン） */
+function initTabBar() {
+  const tabbar = document.querySelector('.tabbar');
+  if (!tabbar) return;
+
+  const buttons = Array.from(tabbar.querySelectorAll('.tabbar__btn'));
+  const viewIds = ['view-timeline', 'view-search', 'view-dm'];
+
+  function activate(targetId) {
+    viewIds.forEach((id) => {
+      const view = document.getElementById(id);
+      if (view) view.hidden = (id !== targetId);
+    });
+    buttons.forEach((btn) => {
+      const isActive = btn.dataset.view === targetId;
+      btn.classList.toggle('is-active', isActive);
+      btn.setAttribute('aria-current', isActive ? 'page' : 'false');
+    });
+    // ビュー切り替え時はページ上端へ（アプリらしい挙動）
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => activate(btn.dataset.view));
+  });
+
+  activate('view-timeline');
+}
+
+/* ===========================================================
+   ⑧ 検索ビュー：ヒント投稿のリアルタイム絞り込み
+   =========================================================== */
+
+/** 検索ビューを初期化する */
+function initSearch() {
+  const input   = document.getElementById('search-input');
+  const results = document.getElementById('search-results');
+  const pool    = document.getElementById('hint-pool');
+  if (!input || !results || !pool) return;
+
+  const hintPosts = Array.from(pool.querySelectorAll('.post'));
+
+  function runSearch(rawQuery) {
+    const query = (rawQuery || '').trim().toLowerCase();
+    results.innerHTML = '';
+
+    // 空欄のときは結果を出さない（ガイド文＋チップのみの状態）
+    if (!query) return;
+
+    const matched = hintPosts.filter((post) =>
+      post.textContent.toLowerCase().includes(query)
+    );
+
+    if (matched.length === 0) {
+      const empty = document.createElement('p');
+      empty.className = 'search-empty';
+      empty.textContent = '「' + rawQuery.trim() + '」に一致する投稿は見つかりませんでした。';
+      results.appendChild(empty);
+      return;
+    }
+
+    matched.forEach((post) => {
+      const clone = post.cloneNode(true);
+      clone.hidden = false;
+      results.appendChild(clone);
+    });
+  }
+
+  // 入力のたびにリアルタイムで絞り込み
+  input.addEventListener('input', () => runSearch(input.value));
+
+  // 候補ハッシュタグチップ：クリックで検索欄に入れて実行
+  document.querySelectorAll('.search-chip').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      input.value = chip.dataset.query || chip.textContent.trim();
+      runSearch(input.value);
+      input.focus();
+    });
+  });
+}
+
+/* ===========================================================
+   ⑨ 初期化（DOMContentLoaded）
    =========================================================== */
 document.addEventListener('DOMContentLoaded', () => {
+
+  initTabBar();
+  initSearch();
+
 
   /* --- Stage 1 --- */
   bindInputActions('stage1-input', 'stage1-submit', () => {

@@ -20,395 +20,555 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Noto+Serif+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!--
-  ★ common.css は読み込まない（マツッターは独立したUIのため）
-     このゲーム専用のstyle.cssのみ使用します。
+  スタイルシートの読み込み順（重要）:
+    ① common.css — サイト共通デザイン（ヘッダー等）
+    ② style.css  — マツッター専用スタイル（common.css を上書き・拡張する）
   -->
+  <link rel="stylesheet" href="../../css/common.css">
   <link rel="stylesheet" href="style.css">
+
+  <!-- 共通ハンバーガーメニューの自動クローズ（他ページと同じ） -->
+  <script src="../../js/menu.js" defer></script>
 </head>
 <body>
 
   <!-- ========================================================
-       マツッター アプリバー（フィクションのSNSヘッダー）
+       共通ナビゲーション（ハンバーガーメニュー付き）
+       ⚠️ id="nav-toggle" は固定。変更禁止。
   ======================================================== -->
-  <header class="app-header" id="top">
-    <div class="app-header__inner">
-      <!-- ロゴ・タイトル -->
-      <div class="app-header__logo">
-        <!-- ✏️ マツッターのロゴ絵文字（変更可） -->
-        <span class="app-header__logo-icon" aria-hidden="true">🔍</span>
-        <span class="app-header__logo-text">マツッター</span>
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+
+  <nav class="site-nav" aria-label="サイトナビゲーション">
+    <div class="site-nav__inner">
+      <div class="site-nav__logo">
+        <a href="../../index.html">Campus Festival</a>
       </div>
-      <!-- ✏️ 事件名ハッシュタグ（変更可） -->
-      <div class="app-header__tag">#キャンフェスデマ事件</div>
+      <label for="nav-toggle" class="site-nav__hamburger" aria-label="メニューを開く">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
     </div>
-  </header>
+  </nav>
+
+  <!-- メニューパネル（右側からスライドイン） -->
+  <div class="nav-menu" role="dialog" aria-modal="true" aria-label="サイトメニュー">
+    <label for="nav-toggle" class="nav-menu__close" aria-label="メニューを閉じる">×</label>
+    <p class="nav-menu__logo">Campus Festival</p>
+    <nav aria-label="バーガーメニュー">
+      <ul class="nav-menu__list">
+        <li>
+          <a href="../../index.html#top" class="nav-menu__link">
+            About <span>概要</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html#projects" class="nav-menu__link">
+            Chambers <span>企画一覧</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html#schedule" class="nav-menu__link">
+            Schedule <span>タイムスケジュール</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html#map" class="nav-menu__link">
+            Map <span>キャンパスマップ</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html#caution" class="nav-menu__link">
+            Notice <span>注意事項</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <!-- /nav-menu -->
+
+  <!-- 背景暗転（クリックでメニューを閉じる） -->
+  <label for="nav-toggle" class="nav-menu__backdrop" aria-hidden="true"></label>
 
   <!-- ========================================================
-       企画紹介へ戻るボタン（上部）
+       企画紹介へ戻るボタン（上部・変更なし）
   ======================================================== -->
   <div class="back-bar">
-    <!--
-    ✏️ 【編集ガイド】href のリンク先
-       このゲームが mystery-quest/ から起動される想定のリンクです。
-    -->
     <a href="../mystery-quest/index.html" class="back-bar__link" id="btn-back-top">
       ← 企画紹介ページに戻る
     </a>
   </div>
 
   <!-- ========================================================
-       オープニング演出バナー
+       アプリ本体（3ビュー：タイムライン / 検索 / DM）
+       下部タブバーで切り替え。表示中は1ビューのみ。
   ======================================================== -->
-  <div class="opening-banner" id="opening-banner" aria-live="polite">
-    <!--
-    ✏️ 【編集ガイド】オープニング文
-       ゲーム冒頭に表示される「世界観の説明」部分です。
-    -->
-    <p class="opening-banner__label">⚠️ SYSTEM ALERT</p>
-    <h1 class="opening-banner__title">キャンフェスデマ事件 — 捜査ファイル</h1>
-    <p class="opening-banner__body">
-      SNS「マツッター」上に、キャンフェス2026に関する<strong>不審な投稿</strong>が確認された。<br>
-      目撃者・関係者の証言を読み解き、<strong>デマを流した犯人</strong>を特定せよ。<br>
-      <span class="opening-banner__hint">※ タイムラインの投稿を読んでヒントを集め、下のキーワード欄に答えを入力してください。</span>
-    </p>
-  </div>
+  <main class="mt-app" id="main" role="main">
 
-  <!-- ========================================================
-       タイムライン本体
-  ======================================================== -->
-  <main class="timeline" id="timeline" role="main" aria-label="マツッター タイムライン">
+    <!-- ====================================================
+         VIEW 1 : タイムライン（読み物）
+    ==================================================== -->
+    <section class="app-view" id="view-timeline" aria-label="タイムライン">
 
-    <!-- ============================================================
-         ① 冒頭の「怪しい投稿」— 事件発端のデマポスト
-         ✏️ 犯人・ストーリーに合わせて文言を変更してください。
-    ============================================================ -->
-    <article class="post post--suspect" data-post="intro">
-      <div class="post__avatar post__avatar--suspect" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11c-1.5 0-2.5.5-3 2"/><path d="M4 6a2 2 0 0 0-2 2v4a5 5 0 0 0 5 5 8 8 0 0 1 5 2 8 8 0 0 1 5-2 5 5 0 0 0 5-5V8a2 2 0 0 0-2-2h-3a8 8 0 0 0-5 2 8 8 0 0 0-5-2z"/><path d="M6 11c1.5 0 2.5.5 3 2"/></svg></div>
-      <div class="post__body">
-        <div class="post__header">
-          <!-- ✏️ 犯人アカウント名・ユーザー名を変更してください -->
-          <span class="post__name">謎の投稿者 X</span>
-          <span class="post__handle">@unknown_x_2026</span>
-          <span class="post__time">09:12</span>
-        </div>
-        <p class="post__text">
-          ［緊急拡散希望］キャンフェス、今日中止らしいよ。
-          運営から公式アナウンスあった。もう引き返せない。<br>
-          <span class="post__hashtag">#キャンフェス2026</span>
-          <span class="post__hashtag">#中止</span>
-          <span class="post__hashtag">#緊急</span>
-        </p>
-        <div class="post__footer">
-          <span class="post__stat">🔁 142</span>
-          <span class="post__stat">❤️ 38</span>
-          <span class="post__badge post__badge--warning">⚠️ デマ投稿</span>
-        </div>
-      </div>
-    </article>
+      <h1 class="mt-view-title">キャンフェスデマ事件 — 捜査ファイル</h1>
 
-    <!-- ============================================================
-         ② ヒント投稿群（1〜6問目）
-         ✏️ data-hint="1"〜"6" の投稿内容を謎解きに合わせて書き換え
-    ============================================================ -->
-
-    <!-- ヒント投稿 1 -->
-    <article class="post post--witness" data-post="hint" data-hint="1">
-      <div class="post__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></div>
-      <div class="post__body">
-        <div class="post__header">
-          <span class="post__name">たろちゃん</span>
-          <span class="post__handle">@taro_campfes</span>
-          <span class="post__time">09:18</span>
-        </div>
-        <p class="post__text">
-          <!-- ✏️ ヒント1の文章 -->
-          え、中止？！さっき正門で<strong>「M」と書かれたステッカー</strong>が貼られた看板を見たけど…
-          あれが怪しいのかな。<span class="post__hashtag">#キャンフェスデマ事件</span>
-        </p>
-        <div class="post__footer">
-          <span class="post__stat">🔁 23</span>
-          <span class="post__stat">❤️ 87</span>
-          <span class="post__hint-badge">🔎 ヒント①</span>
-        </div>
-      </div>
-    </article>
-
-    <!-- ヒント投稿 2 -->
-    <article class="post post--witness" data-post="hint" data-hint="2">
-      <div class="post__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg></div>
-      <div class="post__body">
-        <div class="post__header">
-          <span class="post__name">花子 探偵</span>
-          <span class="post__handle">@hanako_detective</span>
-          <span class="post__time">09:31</span>
-        </div>
-        <p class="post__text">
-          <!-- ✏️ ヒント2の文章 -->
-          不審な投稿のIPログを辿ったら…発信場所は<strong>「A棟 3階」</strong>の端末から。
-          あの場所には誰がいたんだろう。<span class="post__hashtag">#調査中</span>
-        </p>
-        <div class="post__footer">
-          <span class="post__stat">🔁 61</span>
-          <span class="post__stat">❤️ 112</span>
-          <span class="post__hint-badge">🔎 ヒント②</span>
-        </div>
-      </div>
-    </article>
-
-    <!-- ヒント投稿 3 -->
-    <article class="post post--witness" data-post="hint" data-hint="3">
-      <div class="post__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"/><path d="M14 13.12c0 2.38 0 6.38-1 8.88"/><path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"/><path d="M2 12a10 10 0 0 1 18-6"/><path d="M2 16h.01"/><path d="M21.8 16c.2-2 .131-5.354 0-6"/><path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"/><path d="M8.65 22c.21-.66.45-1.32.57-2"/><path d="M9 6.8a6 6 0 0 1 9 5.2v2"/></svg></div>
-      <div class="post__body">
-        <div class="post__header">
-          <span class="post__name">松田 捜査官</span>
-          <span class="post__handle">@matsuda_detective</span>
-          <span class="post__time">09:45</span>
-        </div>
-        <p class="post__text">
-          <!-- ✏️ ヒント3の文章 -->
-          目撃情報：投稿直前、<strong>黒いパーカーの人物</strong>が図書館前のベンチに座ってスマホを操作していた。
-          手元には<strong>「5」と書かれたメモ</strong>が…<span class="post__hashtag">#目撃者募集</span>
-        </p>
-        <div class="post__footer">
-          <span class="post__stat">🔁 89</span>
-          <span class="post__stat">❤️ 204</span>
-          <span class="post__hint-badge">🔎 ヒント③</span>
-        </div>
-      </div>
-    </article>
-
-    <!-- ヒント投稿 4 -->
-    <article class="post post--witness" data-post="hint" data-hint="4">
-      <div class="post__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg></div>
-      <div class="post__body">
-        <div class="post__header">
-          <span class="post__name">写真部 ゆい</span>
-          <span class="post__handle">@yui_photo_club</span>
-          <span class="post__time">10:02</span>
-        </div>
-        <p class="post__text">
-          <!-- ✏️ ヒント4の文章 -->
-          写真整理してたら偶然写ってた！9時10分ごろ、A棟3階の窓から外を覗いてる人物。
-          <strong>名札に「T・S」</strong>って書いてあるっぽい…？<span class="post__hashtag">#証拠写真</span>
-        </p>
-        <div class="post__footer">
-          <span class="post__stat">🔁 310</span>
-          <span class="post__stat">❤️ 521</span>
-          <span class="post__hint-badge">🔎 ヒント④</span>
-        </div>
-      </div>
-    </article>
-
-    <!-- ヒント投稿 5 -->
-    <article class="post post--witness" data-post="hint" data-hint="5">
-      <div class="post__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z"/><path d="M20.054 15.987H3.946"/></svg></div>
-      <div class="post__body">
-        <div class="post__header">
-          <span class="post__name">情報部 けんた</span>
-          <span class="post__handle">@kenta_itclub</span>
-          <span class="post__time">10:15</span>
-        </div>
-        <p class="post__text">
-          <!-- ✏️ ヒント5の文章 -->
-          アカウント @unknown_x_2026 を解析したら
-          プロフィール画像のメタデータに<strong>「Matsuda_2026」</strong>という文字列が残ってた。
-          これ、本名じゃないか？<span class="post__hashtag">#デジタル捜査</span>
-        </p>
-        <div class="post__footer">
-          <span class="post__stat">🔁 178</span>
-          <span class="post__stat">❤️ 399</span>
-          <span class="post__hint-badge">🔎 ヒント⑤</span>
-        </div>
-      </div>
-    </article>
-
-    <!-- ヒント投稿 6 -->
-    <article class="post post--witness" data-post="hint" data-hint="6">
-      <div class="post__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/><path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14"/><path d="M8 6v8"/></svg></div>
-      <div class="post__body">
-        <div class="post__header">
-          <span class="post__name">実行委員長 あおい</span>
-          <span class="post__handle">@aoi_committee</span>
-          <span class="post__time">10:29</span>
-        </div>
-        <p class="post__text">
-          <!-- ✏️ ヒント6の文章 -->
-          みなさん、落ち着いてください。キャンフェスは<strong>予定通り開催</strong>です！
-          デマを流した人物の特定を進めています。
-          心当たりのある方はDMを。<span class="post__hashtag">#キャンフェス開催</span>
-        </p>
-        <div class="post__footer">
-          <span class="post__stat">🔁 892</span>
-          <span class="post__stat">❤️ 1.2K</span>
-          <span class="post__hint-badge">🔎 ヒント⑥</span>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================================================
-         ③ キーワード入力エリア（1〜6問目クリア用）
-         ✏️ 正解キーワードは script.js の STAGE_ANSWER で設定
-    ============================================================ -->
-    <div class="input-zone" id="input-zone-stage1">
-      <div class="input-zone__inner">
-        <p class="input-zone__label">🔐 捜査コードを入力</p>
-        <!--
-        ✏️ 問題の指示文（変更可）
-        -->
-        <p class="input-zone__question">
-          投稿を読んで答えをまとめよ。<br>
-          <strong>1〜6問の答えを合わせた「捜査コード」</strong>を入力してください。
-        </p>
-        <div class="input-zone__form" role="form" aria-label="捜査コード入力フォーム">
-          <input
-            type="text"
-            id="stage1-input"
-            class="input-zone__field"
-            placeholder="捜査コードを入力…"
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
-            aria-label="捜査コード入力欄"
-          >
-          <button
-            type="button"
-            id="stage1-submit"
-            class="input-zone__btn"
-            aria-label="捜査コードを送信"
-          >
-            送信 ▶
-          </button>
-        </div>
-        <p class="input-zone__error" id="stage1-error" role="alert" aria-live="assertive" hidden>
-          ❌ 捜査コードが違います。もう一度確認してください。
-        </p>
-      </div>
-    </div>
-
-    <!-- ============================================================
-         ④ 最終問題ポスト（stage1クリア後にJSで出現）
-         ✏️ 最終問題・正解は script.js の FINAL_ANSWER で設定
-    ============================================================ -->
-    <article class="post post--final" id="final-post" data-post="final" hidden aria-live="polite">
-      <div class="post__avatar post__avatar--suspect" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11c-1.5 0-2.5.5-3 2"/><path d="M4 6a2 2 0 0 0-2 2v4a5 5 0 0 0 5 5 8 8 0 0 1 5 2 8 8 0 0 1 5-2 5 5 0 0 0 5-5V8a2 2 0 0 0-2-2h-3a8 8 0 0 0-5 2 8 8 0 0 0-5-2z"/><path d="M6 11c1.5 0 2.5.5 3 2"/></svg></div>
-      <div class="post__body">
-        <div class="post__header">
-          <span class="post__name post__name--red">謎の投稿者 X（正体判明）</span>
-          <span class="post__handle">@unknown_x_2026</span>
-          <span class="post__time">10:44</span>
-        </div>
-        <!--
-        ✏️ 【編集ガイド】最終問題の文章
-           犯人から捜査チームへの「最後の挑戦状」をここに書きます。
-        -->
-        <p class="post__text">
-          ……よくここまで来た。だが、まだ終わりじゃない。<br>
-          最後にこれに答えてみろ。<br><br>
-          <span class="post__final-question">
-            ❓ 最終問題：私の本当の名前（フルネーム）は何か？<br>
-            <small>（ヒント：投稿を全部読み返すと答えが見えてくる）</small>
-          </span>
-        </p>
-        <div class="post__footer">
-          <span class="post__stat">🔁 ???</span>
-          <span class="post__stat">❤️ 0</span>
-          <span class="post__badge post__badge--red">🔴 LIVE</span>
-        </div>
-      </div>
-
-      <!-- 最終問題の解答入力エリア -->
-      <div class="input-zone input-zone--inline" id="input-zone-final">
-        <div class="input-zone__inner">
-          <p class="input-zone__label">🚨 最終回答を入力</p>
-          <div class="input-zone__form" role="form" aria-label="最終回答フォーム">
-            <input
-              type="text"
-              id="final-input"
-              class="input-zone__field"
-              placeholder="犯人の名前を入力…"
-              autocomplete="off"
-              autocorrect="off"
-              autocapitalize="off"
-              spellcheck="false"
-              aria-label="最終回答入力欄"
-            >
-            <button
-              type="button"
-              id="final-submit"
-              class="input-zone__btn input-zone__btn--red"
-              aria-label="最終回答を送信"
-            >
-              解決 ▶
-            </button>
-          </div>
-          <p class="input-zone__error" id="final-error" role="alert" aria-live="assertive" hidden>
-            ❌ 違います。もう一度考えてみてください。
-          </p>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================================================
-         ⑤ エンディング（finalクリア後にJSで出現）
-         ✏️ 受付案内・スタッフ名・バッジ文言はここで変更
-    ============================================================ -->
-    <div class="ending" id="ending" hidden aria-live="polite">
-      <div class="ending__banner">
-        <span class="ending__banner-icon" aria-hidden="true">🎉</span>
-        <p class="ending__banner-text">事件解決！</p>
-      </div>
-
-      <article class="post post--ending" data-post="ending">
-        <div class="post__avatar post__avatar--ending" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg></div>
+      <!-- ① 冒頭の「怪しい投稿」— 事件発端のデマポスト -->
+      <article class="post post--suspect" data-post="intro">
+        <div class="post__avatar post__avatar--suspect" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11c-1.5 0-2.5.5-3 2"/><path d="M4 6a2 2 0 0 0-2 2v4a5 5 0 0 0 5 5 8 8 0 0 1 5 2 8 8 0 0 1 5-2 5 5 0 0 0 5-5V8a2 2 0 0 0-2-2h-3a8 8 0 0 0-5 2 8 8 0 0 0-5-2z"/><path d="M6 11c1.5 0 2.5.5 3 2"/></svg></div>
         <div class="post__body">
           <div class="post__header">
-            <span class="post__name post__name--gold">実行委員長 あおい</span>
-            <span class="post__handle">@aoi_committee</span>
-            <span class="post__time">✓ SOLVED</span>
+            <span class="post__name">謎の投稿者 X</span>
+            <span class="post__handle">@unknown_x_2026</span>
+            <span class="post__time">09:12</span>
           </div>
-          <!--
-          ✏️ 【編集ガイド】エンディングの文章
-          -->
           <p class="post__text">
-            🎊 あなたの捜査により、真犯人が特定されました！<br>
-            デマ投稿の犯人は <strong>「松田 輝仁（まつだ てるひと）」</strong>でした。<br>
-            キャンフェスは平和を取り戻しました。本当にありがとう！
+            ［緊急拡散希望］キャンフェス、今日中止らしいよ。
+            運営から公式アナウンスあった。もう引き返せない。<br>
+            <span class="post__hashtag">#キャンフェス2026</span>
+            <span class="post__hashtag">#中止</span>
+            <span class="post__hashtag">#緊急</span>
           </p>
           <div class="post__footer">
-            <span class="post__stat">🔁 9,999</span>
-            <span class="post__stat">❤️ ∞</span>
+            <span class="post__stat">🔁 142</span>
+            <span class="post__stat">❤️ 38</span>
+            <span class="post__badge post__badge--warning">⚠️ デマ投稿</span>
           </div>
         </div>
       </article>
 
-      <!-- 受付誘導 -->
-      <div class="ending__guide" id="ending-guide">
-        <!--
-        ✏️ 【編集ガイド】景品受け取り案内
-           「のり」はスタッフ名です。変更してください。
-        -->
-        <p class="ending__guide-title">🏆 景品ゲット！</p>
-        <p class="ending__guide-body">
-          この画面を<strong>「のり」</strong>の前の受付スタッフに見せて<br>
-          景品を受け取ってください！
-        </p>
-        <!--
-        ✏️ 【編集ガイド】クリア証明バッジ
-           ここに達成バッジや景品の画像を追加できます。
-           例: <img src="badge_clear.png" alt="クリア達成バッジ" class="ending__badge-img">
-        -->
-        <div class="ending__badge" aria-label="クリア達成バッジ">
-          <span class="ending__badge-icon">🔓</span>
-          <p class="ending__badge-label">CASE CLOSED</p>
-          <p class="ending__badge-sub">キャンフェス2026 謎解き完全クリア</p>
+      <!-- ============================================================
+           噂が広がる一般人の反応（雰囲気づくり・ヒント要素なし）
+           ✏️ data-hint 属性は付けない（検索対象にしない）
+      ============================================================ -->
+
+      <article class="post post--witness" data-post="ambient">
+        <div class="post__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10V9"/><path d="M9 10V9"/><path d="M9 16a5 5 0 0 1 6 0"/><circle cx="12" cy="12" r="10"/></svg></div>
+        <div class="post__body">
+          <div class="post__header">
+            <span class="post__name">ももこ</span>
+            <span class="post__handle">@momo_camp26</span>
+            <span class="post__time">09:14</span>
+          </div>
+          <p class="post__text">
+            うそやばい、まじで中止なの!? 出店の準備めっちゃしたのに…😭 誰か本当か教えて
+            <span class="post__hashtag">#キャンフェス2026</span>
+          </p>
+          <div class="post__footer">
+            <span class="post__stat">🔁 46</span>
+            <span class="post__stat">❤️ 73</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="post post--witness" data-post="ambient">
+        <div class="post__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></svg></div>
+        <div class="post__body">
+          <div class="post__header">
+            <span class="post__name">りく（3年A組）</span>
+            <span class="post__handle">@riku_3a</span>
+            <span class="post__time">09:22</span>
+          </div>
+          <p class="post__text">
+            え待って中止の話拡散されすぎてて草。てかソースどこ？公式そんなアナウンス出してなくない？
+          </p>
+          <div class="post__footer">
+            <span class="post__stat">🔁 88</span>
+            <span class="post__stat">❤️ 154</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="post post--witness" data-post="ambient">
+        <div class="post__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="post__body">
+          <div class="post__header">
+            <span class="post__name">だいすけ先輩</span>
+            <span class="post__handle">@daisuke_senpai</span>
+            <span class="post__time">09:40</span>
+          </div>
+          <p class="post__text">
+            後輩から中止って聞いて焦って先生に聞きに行ったら『そんな話聞いてない』って言われた。これデマだ
+          </p>
+          <div class="post__footer">
+            <span class="post__stat">🔁 205</span>
+            <span class="post__stat">❤️ 367</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="post post--witness" data-post="ambient">
+        <div class="post__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg></div>
+        <div class="post__body">
+          <div class="post__header">
+            <span class="post__name">匿名希望</span>
+            <span class="post__handle">@anon_student2026</span>
+            <span class="post__time">09:58</span>
+          </div>
+          <p class="post__text">
+            なんか変な投稿からめっちゃ広まってるらしい。RTする前に一回確認した方がいいと思うよ〜
+          </p>
+          <div class="post__footer">
+            <span class="post__stat">🔁 132</span>
+            <span class="post__stat">❤️ 219</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ============================================================
+           ④ 最終問題ポスト（メッセージのみ / stage1クリア後にJSで出現）
+              ※ 回答入力フォームは DM ビューに分離
+      ============================================================ -->
+      <article class="post post--final" id="final-post" data-post="final" hidden aria-live="polite">
+        <div class="post__avatar post__avatar--suspect" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11c-1.5 0-2.5.5-3 2"/><path d="M4 6a2 2 0 0 0-2 2v4a5 5 0 0 0 5 5 8 8 0 0 1 5 2 8 8 0 0 1 5-2 5 5 0 0 0 5-5V8a2 2 0 0 0-2-2h-3a8 8 0 0 0-5 2 8 8 0 0 0-5-2z"/><path d="M6 11c1.5 0 2.5.5 3 2"/></svg></div>
+        <div class="post__body">
+          <div class="post__header">
+            <span class="post__name post__name--red">謎の投稿者 X（正体判明）</span>
+            <span class="post__handle">@unknown_x_2026</span>
+            <span class="post__time">10:44</span>
+          </div>
+          <p class="post__text">
+            ……よくここまで来た。だが、まだ終わりじゃない。<br>
+            最後にこれに答えてみろ。<br><br>
+            <span class="post__final-question">
+              ❓ 最終問題：私の本当の名前（フルネーム）は何か？<br>
+              <small>（ヒント：投稿を全部読み返すと答えが見えてくる）</small>
+            </span>
+          </p>
+          <div class="post__footer">
+            <span class="post__stat">🔁 ???</span>
+            <span class="post__stat">❤️ 0</span>
+            <span class="post__badge post__badge--red">🔴 LIVE</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ============================================================
+           事件解決後にタイムラインへ追加表示される投稿
+           （最終回答が正解した時点で JS が hidden を解除）
+      ============================================================ -->
+      <article class="post post--witness" id="post-reveal-followup" data-post="followup" hidden aria-live="polite">
+        <div class="post__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10V9"/><path d="M16.472 15a6 6 0 0 1-8.943 0"/><path d="M9 10V9"/><circle cx="12" cy="12" r="10"/></svg></div>
+        <div class="post__body">
+          <div class="post__header">
+            <span class="post__name">ももこ</span>
+            <span class="post__handle">@momo_camp26</span>
+            <span class="post__time">たった今</span>
+          </div>
+          <p class="post__text">
+            さっきの中止デマの件、実行委員に聞いたら「この投稿、地味に画像加工が凝ってて逆に手間かかってたと思う」って言ってた(笑) 犯人ちゃんと捕まったみたいで安心した〜
+          </p>
+          <div class="post__footer">
+            <span class="post__stat">🔁 128</span>
+            <span class="post__stat">❤️ 402</span>
+          </div>
+        </div>
+      </article>
+
+    </section>
+    <!-- /#view-timeline -->
+
+    <!-- ====================================================
+         VIEW 2 : 検索（ヒント探し）
+    ==================================================== -->
+    <section class="app-view" id="view-search" aria-label="検索" hidden>
+
+      <div class="search-bar">
+        <span class="search-bar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg></span>
+        <input
+          type="text"
+          id="search-input"
+          class="search-bar__input"
+          placeholder="キーワードやハッシュタグで検索"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          aria-label="投稿を検索"
+        >
+      </div>
+
+      <p class="search-guide">投稿に出てきたキーワードやハッシュタグで検索してみよう</p>
+
+      <div class="search-chips" role="list">
+        <button type="button" class="search-chip" data-query="#キャンフェスデマ事件">#キャンフェスデマ事件</button>
+        <button type="button" class="search-chip" data-query="#調査中">#調査中</button>
+        <button type="button" class="search-chip" data-query="#目撃者募集">#目撃者募集</button>
+        <button type="button" class="search-chip" data-query="#証拠写真">#証拠写真</button>
+        <button type="button" class="search-chip" data-query="#デジタル捜査">#デジタル捜査</button>
+        <button type="button" class="search-chip" data-query="#キャンフェス開催">#キャンフェス開催</button>
+      </div>
+
+      <div id="search-results" class="search-results" aria-live="polite"></div>
+
+      <!-- ============================================================
+           検索対象のヒント投稿プール（非表示）
+           検索文字列に部分一致した投稿だけ #search-results に複製表示される。
+           ✏️ 投稿の中身は変更しない（旧タイムラインから位置を移しただけ）
+      ============================================================ -->
+      <div id="hint-pool" hidden>
+
+        <!-- ヒント投稿 1 -->
+        <article class="post post--witness" data-post="hint" data-hint="1">
+          <div class="post__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></div>
+          <div class="post__body">
+            <div class="post__header">
+              <span class="post__name">たろちゃん</span>
+              <span class="post__handle">@taro_campfes</span>
+              <span class="post__time">09:18</span>
+            </div>
+            <p class="post__text">
+              <!-- ✏️ ヒント1の文章 -->
+              え、中止？！さっき正門で<strong>「M」と書かれたステッカー</strong>が貼られた看板を見たけど…
+              あれが怪しいのかな。<span class="post__hashtag">#キャンフェスデマ事件</span>
+            </p>
+            <div class="post__footer">
+              <span class="post__stat">🔁 23</span>
+              <span class="post__stat">❤️ 87</span>
+              <span class="post__hint-badge">🔎 ヒント①</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- ヒント投稿 2 -->
+        <article class="post post--witness" data-post="hint" data-hint="2">
+          <div class="post__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg></div>
+          <div class="post__body">
+            <div class="post__header">
+              <span class="post__name">花子 探偵</span>
+              <span class="post__handle">@hanako_detective</span>
+              <span class="post__time">09:31</span>
+            </div>
+            <p class="post__text">
+              <!-- ✏️ ヒント2の文章 -->
+              不審な投稿のIPログを辿ったら…発信場所は<strong>「A棟 3階」</strong>の端末から。
+              あの場所には誰がいたんだろう。<span class="post__hashtag">#調査中</span>
+            </p>
+            <div class="post__footer">
+              <span class="post__stat">🔁 61</span>
+              <span class="post__stat">❤️ 112</span>
+              <span class="post__hint-badge">🔎 ヒント②</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- ヒント投稿 3 -->
+        <article class="post post--witness" data-post="hint" data-hint="3">
+          <div class="post__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"/><path d="M14 13.12c0 2.38 0 6.38-1 8.88"/><path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"/><path d="M2 12a10 10 0 0 1 18-6"/><path d="M2 16h.01"/><path d="M21.8 16c.2-2 .131-5.354 0-6"/><path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"/><path d="M8.65 22c.21-.66.45-1.32.57-2"/><path d="M9 6.8a6 6 0 0 1 9 5.2v2"/></svg></div>
+          <div class="post__body">
+            <div class="post__header">
+              <span class="post__name">松田 捜査官</span>
+              <span class="post__handle">@matsuda_detective</span>
+              <span class="post__time">09:45</span>
+            </div>
+            <p class="post__text">
+              <!-- ✏️ ヒント3の文章 -->
+              目撃情報：投稿直前、<strong>黒いパーカーの人物</strong>が図書館前のベンチに座ってスマホを操作していた。
+              手元には<strong>「5」と書かれたメモ</strong>が…<span class="post__hashtag">#目撃者募集</span>
+            </p>
+            <div class="post__footer">
+              <span class="post__stat">🔁 89</span>
+              <span class="post__stat">❤️ 204</span>
+              <span class="post__hint-badge">🔎 ヒント③</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- ヒント投稿 4 -->
+        <article class="post post--witness" data-post="hint" data-hint="4">
+          <div class="post__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg></div>
+          <div class="post__body">
+            <div class="post__header">
+              <span class="post__name">写真部 ゆい</span>
+              <span class="post__handle">@yui_photo_club</span>
+              <span class="post__time">10:02</span>
+            </div>
+            <p class="post__text">
+              <!-- ✏️ ヒント4の文章 -->
+              写真整理してたら偶然写ってた！9時10分ごろ、A棟3階の窓から外を覗いてる人物。
+              <strong>名札に「T・S」</strong>って書いてあるっぽい…？<span class="post__hashtag">#証拠写真</span>
+            </p>
+            <div class="post__footer">
+              <span class="post__stat">🔁 310</span>
+              <span class="post__stat">❤️ 521</span>
+              <span class="post__hint-badge">🔎 ヒント④</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- ヒント投稿 5 -->
+        <article class="post post--witness" data-post="hint" data-hint="5">
+          <div class="post__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z"/><path d="M20.054 15.987H3.946"/></svg></div>
+          <div class="post__body">
+            <div class="post__header">
+              <span class="post__name">情報部 けんた</span>
+              <span class="post__handle">@kenta_itclub</span>
+              <span class="post__time">10:15</span>
+            </div>
+            <p class="post__text">
+              <!-- ✏️ ヒント5の文章 -->
+              アカウント @unknown_x_2026 を解析したら
+              プロフィール画像のメタデータに<strong>「Matsuda_2026」</strong>という文字列が残ってた。
+              これ、本名じゃないか？<span class="post__hashtag">#デジタル捜査</span>
+            </p>
+            <div class="post__footer">
+              <span class="post__stat">🔁 178</span>
+              <span class="post__stat">❤️ 399</span>
+              <span class="post__hint-badge">🔎 ヒント⑤</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- ヒント投稿 6 -->
+        <article class="post post--witness" data-post="hint" data-hint="6">
+          <div class="post__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/><path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14"/><path d="M8 6v8"/></svg></div>
+          <div class="post__body">
+            <div class="post__header">
+              <span class="post__name">実行委員長 あおい</span>
+              <span class="post__handle">@aoi_committee</span>
+              <span class="post__time">10:29</span>
+            </div>
+            <p class="post__text">
+              <!-- ✏️ ヒント6の文章 -->
+              みなさん、落ち着いてください。キャンフェスは<strong>予定通り開催</strong>です！
+              デマを流した人物の特定を進めています。
+              心当たりのある方はDMを。<span class="post__hashtag">#キャンフェス開催</span>
+            </p>
+            <div class="post__footer">
+              <span class="post__stat">🔁 892</span>
+              <span class="post__stat">❤️ 1.2K</span>
+              <span class="post__hint-badge">🔎 ヒント⑥</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+      <!-- /#hint-pool -->
+
+    </section>
+    <!-- /#view-search -->
+
+    <!-- ====================================================
+         VIEW 3 : DM（捜査本部とのやり取り＝ゲーム操作）
+    ==================================================== -->
+    <section class="app-view" id="view-dm" aria-label="ダイレクトメッセージ" hidden>
+
+      <div class="dm-header">
+        <span class="dm-header__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span>
+        <div class="dm-header__meta">
+          <span class="dm-header__name">捜査本部</span>
+          <span class="dm-header__handle">@campfes_hq</span>
         </div>
       </div>
-    </div>
+
+      <div class="dm-thread">
+
+        <!-- 1通目（常時表示） -->
+        <div class="dm-msg">
+          <span class="dm-msg__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span>
+          <div class="dm-msg__bubble">
+            <p>【捜査依頼】キャンフェス2026に関するデマ投稿を確認しました。タイムラインの投稿と、検索で見つかる目撃情報を頼りに、捜査コードを特定してください。</p>
+          </div>
+        </div>
+
+        <!-- 捜査コード入力フォーム（常時表示 / 旧 input-zone-stage1 を移設・中身不変） -->
+        <div class="input-zone" id="input-zone-stage1">
+          <div class="input-zone__inner">
+            <p class="input-zone__label">🔐 捜査コードを入力</p>
+            <!--
+            ✏️ 問題の指示文（変更可）
+            -->
+            <p class="input-zone__question">
+              投稿を読んで答えをまとめよ。<br>
+              <strong>1〜6問の答えを合わせた「捜査コード」</strong>を入力してください。
+            </p>
+            <div class="input-zone__form" role="form" aria-label="捜査コード入力フォーム">
+              <input
+                type="text"
+                id="stage1-input"
+                class="input-zone__field"
+                placeholder="捜査コードを入力…"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                aria-label="捜査コード入力欄"
+              >
+              <button
+                type="button"
+                id="stage1-submit"
+                class="input-zone__btn"
+                aria-label="捜査コードを送信"
+              >
+                送信 ▶
+              </button>
+            </div>
+            <p class="input-zone__error" id="stage1-error" role="alert" aria-live="assertive" hidden>
+              ❌ 捜査コードが違います。もう一度確認してください。
+            </p>
+          </div>
+        </div>
+
+        <!-- 2通目（捜査コード正解後にJSで出現） -->
+        <div class="dm-msg" id="dm-msg-2" hidden aria-live="polite">
+          <span class="dm-msg__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span>
+          <div class="dm-msg__bubble">
+            <p>🔓 捜査コード認証完了。犯人からの挑発的な投稿がタイムラインに届きました。あわせて、最終問題への回答をこちらで受け付けます。</p>
+          </div>
+        </div>
+
+        <!-- 最終回答入力フォーム（捜査コード正解後にJSで出現 / 旧 #final-post 内から分離・中身不変） -->
+        <div class="input-zone input-zone--inline" id="input-zone-final" hidden aria-live="polite">
+          <div class="input-zone__inner">
+            <p class="input-zone__label">🚨 最終回答を入力</p>
+            <div class="input-zone__form" role="form" aria-label="最終回答フォーム">
+              <input
+                type="text"
+                id="final-input"
+                class="input-zone__field"
+                placeholder="犯人の名前を入力…"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                aria-label="最終回答入力欄"
+              >
+              <button
+                type="button"
+                id="final-submit"
+                class="input-zone__btn input-zone__btn--red"
+                aria-label="最終回答を送信"
+              >
+                解決 ▶
+              </button>
+            </div>
+            <p class="input-zone__error" id="final-error" role="alert" aria-live="assertive" hidden>
+              ❌ 違います。もう一度考えてみてください。
+            </p>
+          </div>
+        </div>
+
+        <!-- 3通目（最終回答正解後にJSで出現 / 旧 #ending の内容を統合） -->
+        <div class="dm-msg" id="dm-msg-3" hidden aria-live="polite">
+          <span class="dm-msg__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span>
+          <div class="dm-msg__bubble dm-msg__bubble--success">
+            <p>🎉 事件解決、お疲れ様でした！ あなたの捜査により、デマ投稿の犯人が特定されました。この画面を<strong>「のり」</strong>の前の受付スタッフに見せて、景品を受け取ってください！</p>
+            <div class="dm-clear-badge" aria-label="クリア達成バッジ">
+              <span class="dm-clear-badge__icon" aria-hidden="true">🔓</span>
+              <span class="dm-clear-badge__label">CASE CLOSED</span>
+              <span class="dm-clear-badge__sub">キャンフェス2026 謎解き完全クリア</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- /.dm-thread -->
+
+    </section>
+    <!-- /#view-dm -->
 
   </main>
 
-  <!-- 下部：企画紹介へ戻るボタン -->
+  <!-- 下部：企画紹介へ戻るボタン（変更なし） -->
   <div class="back-bar back-bar--bottom">
     <a href="../mystery-quest/index.html" class="back-bar__link" id="btn-back-bottom">
       ← 企画紹介ページに戻る
@@ -419,6 +579,24 @@
     <!-- ✏️ フィクションのSNS名・注意書きを変更してください -->
     <p>マツッター — フィクションのSNSです。このゲームはキャンフェス2026の謎解き企画です。</p>
   </footer>
+
+  <!-- ========================================================
+       下部固定タブバー（マツッター独自パーツ・他ページには影響しない）
+  ======================================================== -->
+  <nav class="tabbar" aria-label="ビュー切り替え">
+    <button type="button" class="tabbar__btn is-active" data-view="view-timeline" aria-label="タイムライン">
+      <span class="tabbar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/><path d="M14 4h7"/><path d="M14 9h7"/><path d="M14 15h7"/><path d="M14 20h7"/></svg></span>
+      <span class="tabbar__label">タイムライン</span>
+    </button>
+    <button type="button" class="tabbar__btn" data-view="view-search" aria-label="検索">
+      <span class="tabbar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg></span>
+      <span class="tabbar__label">検索</span>
+    </button>
+    <button type="button" class="tabbar__btn" data-view="view-dm" aria-label="DM">
+      <span class="tabbar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg></span>
+      <span class="tabbar__label">DM</span>
+    </button>
+  </nav>
 
   <script src="script.js"></script>
 </body>
