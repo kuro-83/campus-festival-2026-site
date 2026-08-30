@@ -339,7 +339,6 @@ img {
 
 /* アバター */
 .post__avatar {
-  font-size: 2rem;
   width: 44px;
   height: 44px;
   display: flex;
@@ -351,9 +350,22 @@ img {
   flex-shrink: 0;
 }
 
+/* Lucide 線画アイコン（stroke="currentColor" で親の文字色を継承） */
+.post__avatar svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: var(--text-primary);
+}
+
 .post__avatar--suspect {
   background-color: rgba(165, 75, 66, 0.12);
   border-color: var(--border-red);
+}
+
+/* 怪しい投稿者はアイコンもテーマの赤で危険な雰囲気に */
+.post__avatar--suspect svg {
+  color: var(--text-red);
 }
 
 .post__avatar--ending {
@@ -777,7 +789,11 @@ img {
   .post__avatar {
     width: 36px;
     height: 36px;
-    font-size: 1.5rem;
+  }
+
+  .post__avatar svg {
+    width: 18px;
+    height: 18px;
   }
 
   .opening-banner {
