@@ -47,7 +47,7 @@ const FINAL_ANSWER = 'clear';     // ← ✏️ ここを実際の正解に変�
       取得に失敗した場合は localStorage のキャッシュ →
       それも無ければ DEFAULT_CSV（このファイル下部）で表示します。
    =========================================================== */
-const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRZzNupAWWUdRaj9qbRV0CuHwReAd4p1fhb0ckmZf4M_GicQQnfW-YfCaKo_6p5SBBkvcvCESz8uqcU/pub?gid=1238210212&single=true&output=csv';
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTwLgsSgWQ6TqzSPro4A6DDnF5tZQNlSP10EENuA8iKivNs0c_ovbV6ekIaNioyEMIwo1mIckbb39uv/pub?gid=1802561556&single=true&output=csv';
 const FETCH_TIMEOUT_MS = 6000;
 const CACHE_KEY = 'matsutter_posts_csv_v1';
 
