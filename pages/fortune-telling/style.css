@@ -23,13 +23,13 @@
   /* このページのアクセントカラー
      → common.css の --color-accent と同じブロンズゴールドですが、
         変えればこのページだけ違う色にできます */
-  --page-accent:       #B59469;
+  --page-accent:       #a06fc2;
   --page-accent-dark:  #9A7A52;
-  --page-accent-pale:  #E8DDD0;
+  --page-accent-pale:  #b53aa3;
 
   /* 企画ヘッダーの背景色
      ✏️ ここを変えると企画ページのヘッダー背景色が変わります */
-  --page-hero-bg:      #3D2E22;  /* 深いチョコレートブラウン */
+  --page-hero-bg:      #6f3978;  /* 深いチョコレートブラウン */
   --page-hero-text:    #F7F4EF;  /* 羊皮紙ベージュ（ヘッダーのテキスト色） */
 }
 
